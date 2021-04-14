@@ -1,0 +1,68 @@
+<!-- 
+     ECAL parameters for testbeam: june 2017
+-->
+
+<!--
+   "||" = W layer (2.1mm)
+
+   Conf 1: || 1 || 2 || 3 || 4 |||| 5 |||| 6 |||||| 7 → 12.32 X0
+   Conf 2: |||| 1 || 2 || 3 |||| 4 |||| 5 |||||| 6 |||||| 7 → 15.68 X0
+   Conf 3: |||||| 1 || 2 |||| 3 |||| 4 |||||| 5 |||||| 6 |||||| 7 → 19.04 X0 
+  -->
+  
+<!-- 
+   ECAL slab structure (from upstream beam direction)
+   these are daniel's educated guesses
+
+   Al "capot"             0.2  mm
+   Cu "drain thermique"   0.5  mm
+   Air gap (electronics)  1.4
+   PCB "carte ASU"        1.7  mm
+   glue                   0.1
+   Silicon                0.35  mm
+   glue                   0.1
+   Kapton                 0.1  mm
+   CF "Tole U"            0.2  mm
+  ---------------------------------
+   total thickness = 4.65 mm  <--- this is from he engineers
+  -->
+
+
+  <define>
+    <constant name="env_safety" value="0.001*mm"/>
+    
+    <constant name="Ecal_NcellsX" value="32" />
+    <constant name="Ecal_NcellsY" value="32" />
+    <constant name="Ecal_CellSizeX" value="5.5*mm" />
+    <constant name="Ecal_CellSizeY" value="5.5*mm" />
+
+    <constant name="Ecal_dim_x" value="Ecal_NcellsX*Ecal_CellSizeX"/>
+    <constant name="Ecal_dim_y" value="Ecal_NcellsY*Ecal_CellSizeY"/>
+    <constant name="Ecal_dim_z" value="500*mm"/>
+
+    <constant name="Ecal_LayerDistance" value="15.0*mm"/> <!-- this is the period -->
+
+    <constant name="Ecal_slab_thickness" value="6.73*mm"/>
+
+    <constant name="Ecal_AlThickness" value="0.1*mm"/> <!-- there is also a 1.7mm thickness "plaque Al" but it doesn't cover whole surface, I think, just the edge-->
+    <constant name="Ecal_PcbThickness" value="1.61*mm"/>
+    <constant name="Ecal_GlueThickness_pcb" value="0.08*mm"/>
+    <constant name="Ecal_WaferThickness" value="0.325*mm"/>
+    <constant name="Ecal_GlueThickness_kap" value="0.08*mm"/>
+    <constant name="Ecal_KaptonThickness" value="0.06*mm"/>
+    <constant name="Ecal_CFThickness" value="0.9*mm"/>
+
+    <!-- this is the gap within a slab (electronics, etc) -->
+    <constant name="Ecal_GapThickness" value="Ecal_slab_thickness - Ecal_AlThickness - Ecal_PcbThickness - Ecal_WaferThickness - Ecal_KaptonThickness - Ecal_CFThickness - Ecal_GlueThickness_pcb - Ecal_GlueThickness_kap"/>
+
+    <constant name="Ecal_WThickness" value="2.1*mm"/>
+
+    <constant name="Ecal_w_slab_gap1" value="0.5*mm"/>
+    <constant name="Ecal_w_slab_gap2" value="Ecal_LayerDistance-3*Ecal_WThickness-Ecal_slab_thickness-Ecal_w_slab_gap1"/>
+
+    
+  </define>
+
+  
+
+
