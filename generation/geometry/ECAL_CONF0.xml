@@ -1,8 +1,8 @@
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
-<info name="SiW-TB-2017_conf1_v02"
-    title="SiW-TB-2017_conf1_v02"
+<info name="SiW-TB-2017_conf0_v02"
+    title="SiW-TB-2017_conf0_v02"
     author="D. Jeans"
     url="kek.jp"
     status="development"
