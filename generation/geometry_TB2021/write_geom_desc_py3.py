@@ -111,8 +111,9 @@ def write_geom_xml(layerconfig):
         if slab:
             print('<slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>')
             print('<slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />')
+            print('<slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>')
             print('<slice material = "Si"          thickness = "Ecal_WaferThickness'+str(Si_z)+'"     vis="SiVis" sensitive = "yes" />')
-            print('<slice material = "Air"         thickness = "Ecal_GlueThickness"  vis="AirVis"/>')
+            print('<slice material = "Air"         thickness = "Ecal_GlueThickness_pcb"  vis="AirVis"/>')
             print('<slice material = "PCB"         thickness = "Ecal_PcbThickness"       vis="PCBVis" />')
             print('<slice material = "Air"         thickness = "Ecal_ChipThickness"       vis="AirVis" />')
             print('<slice material = "Air"         thickness = "Ecal_w_slab_gap'+str(Si_z)+'"        vis="AirVis"/>')

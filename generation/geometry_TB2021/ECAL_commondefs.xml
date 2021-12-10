@@ -18,7 +18,7 @@
    ECAL slab structure (from upstream beam direction)
 
    (Tungsten, if any.)
-   Carbon               0.90 mm (Use old value) TODO: BELOW THIS IS 0.9 mm and not 0.2 mm!!!
+   Carbon               1.5 mm (Use old value) A Gallas
    Kapton               0.10 mm (Use old value, )
    Silicon Sensor       0.32 mm (Delivery Specification Chip from HPK Hamamatsu) or 0.50 mm (for layers 8 9 10 11 (in TWiki layer position is 0-indexed, unlike here))
    Glue                 0.10 mm (Vincent)
@@ -54,25 +54,26 @@
 
     <constant name="Ecal_dim_x" value="Ecal_NcellsX*Ecal_CellSizeX"/>
     <constant name="Ecal_dim_y" value="Ecal_NcellsY*Ecal_CellSizeY"/>
-    <constant name="Ecal_dim_z" value="250*mm"/> 
+    <constant name="Ecal_dim_z" value="285*mm"/> <!-- 15*15 layers + 26 (rear space) + 30 (upfront space) + 4 (plastic plates) -->
     <!--TODO: check!! , more on the order of 220*mm (used to be 500*mm), but still fine if we put the first layer in the border of the box (?)-->
 
     <constant name="Ecal_LayerDistance" value="15.0*mm"/> 
     <!-- Meaning of quantity below? total width of asu? Currently: 4.2 (2 W layers) + 4.5 (C+Kapton+Si+Glue+Cu+PCB+Chip)-->
     <!-- <constant name="Ecal_slab_thickness" value="6.73*mm"/> -->
-    <constant name="Ecal_slab_thickness320" value="8.52*mm"/>
-    <constant name="Ecal_slab_thickness500" value="8.7*mm"/>
+    <constant name="Ecal_slab_thickness320" value="9.22*mm"/>
+    <constant name="Ecal_slab_thickness500" value="9.4*mm"/>
 
     <!-- TB2021: No Aluminum-->
     <!-- <constant name="Ecal_AlThickness" value="0.1*mm"/> --> 
     <constant name="Ecal_WThickness" value="2.1*mm"/>
-    <constant name="Ecal_CFThickness" value="0.9*mm"/> <!-- TODO: Above this is 0.2 mm?  Vincent: reasonable-->
+    <constant name="Ecal_CFThickness" value="1.5*mm"/>
     <constant name="Ecal_KaptonThickness" value="0.06*mm"/>
+    <constant name="Ecal_GlueThickness_kap" value="0.1*mm"/>
     <constant name="Ecal_WaferThickness320" value="0.320*mm"/>
     <constant name="Ecal_WaferThickness500" value="0.500*mm"/>
     <!-- TODO: Used to have GlueThickness_pcb and GlueThickness_kap, now (2021) only one-->
     <!-- <constant name="Ecal_GlueThickness_pcb" value="0.08*mm"/>-->
-    <constant name="Ecal_GlueThickness" value="0.1*mm"/>
+    <constant name="Ecal_GlueThickness_pcb" value="0.1*mm"/>
     <!-- TODO: Used to have GlueThickness_pcb and GlueThickness_kap, now (2021) only one-->
     <!-- <constant name="Ecal_GlueThickness_kap" value="0.08*mm"/> -->
     <!-- TODO: Vincent suggested (I think) that we had wafer - glue - Cu (??) - PCB - Chip -->
