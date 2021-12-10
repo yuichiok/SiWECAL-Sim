@@ -1,0 +1,29 @@
+# Macro file for example 
+# 
+# To be run preferably in batch, without graphics:
+# % example[a,b,c,d] run2.mac
+#
+/gps/verbose 1
+/gps/particle mu-
+/gps/direction 0 0 1
+/gps/pos/type Beam
+/gps/pos/shape Circle
+/gps/pos/centre -26 -59 0 mm
+#/gps/pos/halfx 5 mm
+#/gps/pos/halfy 5 mm
+#/gps/pos/radius 3 mm
+/gps/pos/sigma_x 6.3 mm
+/gps/pos/sigma_y 7.5 mm
+#/gps/ang/type beam2d
+#/gps/ang/sigma_x 0. deg
+#/gps/ang/sigma_y 0. deg
+#/gps/ang/type planar
+#/gps/ang/maxtheta 0
+#/gps/ang/maxphi 0
+/gps/ang/rot1 0 0 1
+/gps/ang/rot2 0 1 0
+#/gps/ang/type beam1d
+
+/gps/ene/type Mono
+/gps/ene/mono 4 GeV
+/run/beamOn 10000

@@ -1,0 +1,102 @@
+<!-- 
+     ECAL parameters for testbeam: November 2021 (DESY)
+-->
+
+<!--
+   "||" = W layer (2.1mm)
+
+   Conf 1: 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9 || 10 || 11 || 12 |||| 13 |||| 14 |||| 15 → 9.6 X0
+  -->
+  
+<!-- 
+   Ask Alexandre
+   Plastic plate thickness - distance to groove
+   Dist between groove
+   carbon thickness
+
+
+   ECAL slab structure (from upstream beam direction)
+
+   (Tungsten, if any.)
+   Carbon               0.90 mm (Use old value) TODO: BELOW THIS IS 0.9 mm and not 0.2 mm!!!
+   Kapton               0.10 mm (Use old value, )
+   Silicon Sensor       0.32 mm (Delivery Specification Chip from HPK Hamamatsu) or 0.50 mm (for layers 8 9 10 11 (in TWiki layer position is 0-indexed, unlike here))
+   Glue                 0.10 mm (Vincent)
+   (Copper to be ignored)
+   PCB                  1.70 mm (TODO To be checked)
+   Chip                 1.20 mm 
+   (TODO: Missing gaps? Missing glue?)
+   Air
+   
+   BEGIN OLD DESCRIPTION:
+   Al "capot"             0.2  mm
+   Cu "drain thermique"   0.5  mm
+   Air gap (electronics)  1.4
+   PCB "carte ASU"        1.7  mm
+   glue                   0.1
+   Silicon                0.35  mm
+   glue                   0.1
+   Kapton                 0.1  mm
+   CF "Tole U"            0.2  mm TODO: BELOW THIS IS 0.9 mm!!!
+   ==================================
+   total thickness = 4.65 mm   this is from he engineers
+   END OLD DESCRIPTION
+  -->
+
+
+  <define>
+    <constant name="env_safety" value="0.001*mm"/>
+    
+    <constant name="Ecal_NcellsX" value="32" />
+    <constant name="Ecal_NcellsY" value="32" />
+    <constant name="Ecal_CellSizeX" value="5.5*mm" />
+    <constant name="Ecal_CellSizeY" value="5.5*mm" />
+
+    <constant name="Ecal_dim_x" value="Ecal_NcellsX*Ecal_CellSizeX"/>
+    <constant name="Ecal_dim_y" value="Ecal_NcellsY*Ecal_CellSizeY"/>
+    <constant name="Ecal_dim_z" value="250*mm"/> 
+    <!--TODO: check!! , more on the order of 220*mm (used to be 500*mm), but still fine if we put the first layer in the border of the box (?)-->
+
+    <constant name="Ecal_LayerDistance" value="15.0*mm"/> 
+    <!-- Meaning of quantity below? total width of asu? Currently: 4.2 (2 W layers) + 4.5 (C+Kapton+Si+Glue+Cu+PCB+Chip)-->
+    <!-- <constant name="Ecal_slab_thickness" value="6.73*mm"/> -->
+    <constant name="Ecal_slab_thickness320" value="8.52*mm"/>
+    <constant name="Ecal_slab_thickness500" value="8.7*mm"/>
+
+    <!-- TB2021: No Aluminum-->
+    <!-- <constant name="Ecal_AlThickness" value="0.1*mm"/> --> 
+    <constant name="Ecal_WThickness" value="2.1*mm"/>
+    <constant name="Ecal_CFThickness" value="0.9*mm"/> <!-- TODO: Above this is 0.2 mm?  Vincent: reasonable-->
+    <constant name="Ecal_KaptonThickness" value="0.06*mm"/>
+    <constant name="Ecal_WaferThickness320" value="0.320*mm"/>
+    <constant name="Ecal_WaferThickness500" value="0.500*mm"/>
+    <!-- TODO: Used to have GlueThickness_pcb and GlueThickness_kap, now (2021) only one-->
+    <!-- <constant name="Ecal_GlueThickness_pcb" value="0.08*mm"/>-->
+    <constant name="Ecal_GlueThickness" value="0.1*mm"/>
+    <!-- TODO: Used to have GlueThickness_pcb and GlueThickness_kap, now (2021) only one-->
+    <!-- <constant name="Ecal_GlueThickness_kap" value="0.08*mm"/> -->
+    <!-- TODO: Vincent suggested (I think) that we had wafer - glue - Cu (??) - PCB - Chip -->
+    <!-- TODO: check, PCBTHickness used to be 1.61*mm -->
+    <constant name="Ecal_PcbThickness" value="1.7*mm"/> 
+    <!-- TODO: missing chip!! --> 
+    <constant name="Ecal_ChipThickness" value="1.2*mm"/> 
+
+    <!-- this is the gap within a slab (electronics, etc) -->
+    <!-- <constant name="Ecal_GapThickness" value="Ecal_slab_thickness - Ecal_AlThickness - Ecal_PcbThickness - Ecal_WaferThickness - Ecal_KaptonThickness - Ecal_CFThickness - Ecal_GlueThickness_pcb - Ecal_GlueThickness_kap"/> -->
+    <!-- TODO: Check if this is necessary in 2021? -->
+    <!-- constant name="Ecal_GapThickness" value="Ecal_slab_thickness - Ecal_PcbThickness - Ecal_WaferThickness - Ecal_KaptonThickness - Ecal_CFThickness - Ecal_GlueThickness"/-->
+
+
+    <!-- TODO: Check if these gaps apply to 2021 -->
+    <!-- <constant name="Ecal_w_slab_gap1" value="0.5*mm"/> -->
+    <!-- <constant name="Ecal_w_slab_gap2" value="Ecal_LayerDistance-3*Ecal_WThickness-Ecal_slab_thickness-Ecal_w_slab_gap1"/> -->
+
+    <constant name="Ecal_w_slab_gap320" value="Ecal_LayerDistance-2*Ecal_WThickness-Ecal_slab_thickness320"/>
+    <constant name="Ecal_w_slab_gap500" value="Ecal_LayerDistance-2*Ecal_WThickness-Ecal_slab_thickness500"/>
+
+    
+  </define>
+
+  
+
+
