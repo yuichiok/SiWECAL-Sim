@@ -2,3 +2,21 @@
 # A. Irles
 # Here we will locate the useful processors (as event builders, digitisation etc)
 
+#Folder structure:
+    src/ --> for source code
+    include/ --> for headers
+    CMakeList.txt --> for building with cmake
+    
+#compile:
+
+(example)
+source correct_version_path/init_ilcsoft.sh
+cd yourpath/SiWECAL-Sim/processors/
+mkdir build
+cd build
+cmake -C $ILCSoft/ILCSoft.CMake ..
+make install
+
+
+
+
