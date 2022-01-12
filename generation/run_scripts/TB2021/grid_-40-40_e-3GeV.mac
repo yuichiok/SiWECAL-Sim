@@ -8,12 +8,12 @@
 /gps/direction 0 0 1
 /gps/pos/type Beam
 /gps/pos/shape Circle
-/gps/pos/centre -26 -59 0 mm
+/gps/pos/centre -40 -40 0 mm
 #/gps/pos/halfx 5 mm
 #/gps/pos/halfy 5 mm
 #/gps/pos/radius 3 mm
-/gps/pos/sigma_x 6.3 mm
-/gps/pos/sigma_y 7.5 mm
+/gps/pos/sigma_x 7 mm
+/gps/pos/sigma_y 7 mm
 #/gps/ang/type beam2d
 #/gps/ang/sigma_x 0. deg
 #/gps/ang/sigma_y 0. deg
@@ -26,4 +26,4 @@
 
 /gps/ene/type Mono
 /gps/ene/mono 3 GeV
-/run/beamOn 10000
+/run/beamOn 1000

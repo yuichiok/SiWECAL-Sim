@@ -9,38 +9,28 @@
   -->
   
 <!-- 
-   Ask Alexandre
-   Plastic plate thickness - distance to groove
-   Dist between groove
-   carbon thickness
+   Plastic plate (polyethylene) thickness: 2 mm
+   Distance to groove 61.8 mm
+   Dist between grooves: 15 mm
+   Carbon thickness
 
 
    ECAL slab structure (from upstream beam direction)
 
-   (Tungsten, if any.)
-   Carbon               1.5 mm (Use old value) A Gallas
-   Kapton               0.10 mm (Use old value, )
-   Silicon Sensor       0.32 mm (Delivery Specification Chip from HPK Hamamatsu) or 0.50 mm (for layers 8 9 10 11 (in TWiki layer position is 0-indexed, unlike here))
-   Glue                 0.10 mm (Vincent)
-   (Copper to be ignored)
-   PCB                  1.70 mm (TODO To be checked)
+   Tungsten             0 mm, 2.1 mm or  4.2 mm
+   Carbon               1.50 mm (A Gallas)
+   Kapton               0.10 mm 
+   Glue                 0.10 mm
+   Silicon Sensor       0.32 mm or 0.5 mm
+   Glue                 0.10 mm
+   Copper layer:        0.10 mm
+   PCB                  1.70 mm (TODO To be checked with Jerome)
    Chip                 1.20 mm 
-   (TODO: Missing gaps? Missing glue?)
    Air
-   
-   BEGIN OLD DESCRIPTION:
-   Al "capot"             0.2  mm
-   Cu "drain thermique"   0.5  mm
-   Air gap (electronics)  1.4
-   PCB "carte ASU"        1.7  mm
-   glue                   0.1
-   Silicon                0.35  mm
-   glue                   0.1
-   Kapton                 0.1  mm
-   CF "Tole U"            0.2  mm TODO: BELOW THIS IS 0.9 mm!!!
    ==================================
-   total thickness = 4.65 mm   this is from he engineers
-   END OLD DESCRIPTION
+   total slab thickness = 9.32 mm or 9.5 mm (counting 4.2 mm Tungsten "box")
+  
+
   -->
 
 
@@ -60,14 +50,14 @@
     <constant name="Ecal_LayerDistance" value="15.0*mm"/> 
     <!-- Meaning of quantity below? total width of asu? Currently: 4.2 (2 W layers) + 4.5 (C+Kapton+Si+Glue+Cu+PCB+Chip)-->
     <!-- <constant name="Ecal_slab_thickness" value="6.73*mm"/> -->
-    <constant name="Ecal_slab_thickness320" value="9.22*mm"/>
-    <constant name="Ecal_slab_thickness500" value="9.4*mm"/>
+    <constant name="Ecal_slab_thickness320" value="9.32*mm"/>
+    <constant name="Ecal_slab_thickness500" value="9.5*mm"/>
 
     <!-- TB2021: No Aluminum-->
     <!-- <constant name="Ecal_AlThickness" value="0.1*mm"/> --> 
     <constant name="Ecal_WThickness" value="2.1*mm"/>
     <constant name="Ecal_CFThickness" value="1.5*mm"/>
-    <constant name="Ecal_KaptonThickness" value="0.06*mm"/>
+    <constant name="Ecal_KaptonThickness" value="0.1*mm"/>
     <constant name="Ecal_GlueThickness_kap" value="0.1*mm"/>
     <constant name="Ecal_WaferThickness320" value="0.320*mm"/>
     <constant name="Ecal_WaferThickness500" value="0.500*mm"/>
@@ -92,8 +82,10 @@
     <!-- <constant name="Ecal_w_slab_gap1" value="0.5*mm"/> -->
     <!-- <constant name="Ecal_w_slab_gap2" value="Ecal_LayerDistance-3*Ecal_WThickness-Ecal_slab_thickness-Ecal_w_slab_gap1"/> -->
 
-    <constant name="Ecal_w_slab_gap320" value="Ecal_LayerDistance-2*Ecal_WThickness-Ecal_slab_thickness320"/>
-    <constant name="Ecal_w_slab_gap500" value="Ecal_LayerDistance-2*Ecal_WThickness-Ecal_slab_thickness500"/>
+    <!--constant name="Ecal_w_slab_gap320" value="Ecal_LayerDistance-2*Ecal_WThickness-Ecal_slab_thickness320"/-->
+    <constant name="Ecal_w_slab_gap320" value="Ecal_LayerDistance-Ecal_slab_thickness320"/>
+    <!--constant name="Ecal_w_slab_gap500" value="Ecal_LayerDistance-2*Ecal_WThickness-Ecal_slab_thickness500"/-->
+    <constant name="Ecal_w_slab_gap500" value="Ecal_LayerDistance-Ecal_slab_thickness500"/>
 
     
   </define>

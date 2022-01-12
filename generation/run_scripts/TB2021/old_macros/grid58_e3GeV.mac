@@ -4,7 +4,7 @@
 # % example[a,b,c,d] run2.mac
 #
 /gps/verbose 1
-/gps/particle e+
+/gps/particle e-
 /gps/direction 0 0 1
 /gps/pos/type Beam
 /gps/pos/shape Circle
@@ -26,4 +26,4 @@
 
 /gps/ene/type Mono
 /gps/ene/mono 3 GeV
-/run/beamOn 10000
+/run/beamOn 1000
