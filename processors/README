@@ -1,6 +1,6 @@
 # 01/2022
 # A. Irles
-# Here we will locate the useful processors (as event builders, digitisation etc)
+# Here we will locate the useful processors (as digitisation, mip calibration etc)
 
 #Folder structure:
     src/ --> for source code
