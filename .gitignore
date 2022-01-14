@@ -40,3 +40,8 @@
 *.slcio
 *.pickle
 *.npy
+
+# Folders
+generation/run_scripts/TB2021/steer/*
+generation/run_scripts/TB2021/log/*
+generation/run_scripts/TB2021/data/*
