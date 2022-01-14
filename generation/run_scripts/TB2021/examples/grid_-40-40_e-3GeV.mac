@@ -26,4 +26,4 @@
 
 /gps/ene/type Mono
 /gps/ene/mono 3 GeV
-/run/beamOn 1000
+/run/beamOn 10000
