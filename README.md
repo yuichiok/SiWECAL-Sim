@@ -8,19 +8,19 @@ source /cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-01/init_ilcsoft.sh
 
 # Repository structure
  
-## simulation
-
-### simulation/generation
+## generation
 Includes tools for the generation using DD4HEP
 
-### simulation/src and include
-Processors for analysis of LCIO files for gev2mip and viceversa, ROOT2LCIO converter, etc
+### processors/
 
-### simulation/analyis
+Processors for digitisation, raw-to-root, raw-tolcio convertors, analysis of LCIO files for gev2mip and viceversa
+etc
+
+### analysis/
 
 Useful root/python scripts for fitting, plotting etc
 
-## digitization
+
 
 
 
