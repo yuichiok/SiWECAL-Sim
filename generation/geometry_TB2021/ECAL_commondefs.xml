@@ -55,7 +55,7 @@
 
     <!-- TB2021: No Aluminum-->
     <!-- <constant name="Ecal_AlThickness" value="0.1*mm"/> --> 
-    <constant name="Ecal_WThickness" value="2.1*mm"/>
+    <constant name="Ecal_WThickness" value="0.7*mm"/> <!-- Such that both tb21 and tb22 W thicknesses are integer multiples-->
     <constant name="Ecal_CFThickness" value="1.5*mm"/>
     <constant name="Ecal_KaptonThickness" value="0.1*mm"/>
     <constant name="Ecal_GlueThickness_kap" value="0.1*mm"/>
