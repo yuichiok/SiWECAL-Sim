@@ -93,7 +93,10 @@ def write_geom_xml(layerconfig):
         print('empty layer config')
         return
     # TODO: Put here the plastic PLATE!!!
-    print('<slice material = "Air"         thickness = "27*mm"   vis="Invisible"/>')
+    print('<slice material = "PolyethyleneProto"    thickness = "Ecal_PlasticThickness"   vis="PlasticVis"/>')
+    # TB2021: 29.7 (distance from plastic to first rail) + 30 (first two rails empty) 
+    # A Gallas: add 2.1 of air but I don't agree, as first (W/Air) box below adds 4.2 Air. 
+    print('<slice material = "Air"         thickness = "59.7*mm"   vis="Invisible"/>')
     # the layers of the prototype
     for layer in layerconfig:
         nAbs=layer[0]

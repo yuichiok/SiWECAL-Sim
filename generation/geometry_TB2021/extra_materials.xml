@@ -31,5 +31,15 @@
       <fraction n="1.0" ref="W"/>
     </material>
 
+    <!-- Plastic plate used in TB2021/22 prototype. ATM using for polyethylene (CH2)n: 13.018 = 1.008 (H) + 12.01 (C). -->
+    <material name="PolyethyleneProto">
+      <D value="0.89" unit="g/cm3"/> <!-- Check value w/ Vincent -->
+      <fraction n="0.077431" ref="H"/>
+      <fraction n="0.922569" ref="C"/>
+    </material>
+
+    
+    
+
   </materials>
 
