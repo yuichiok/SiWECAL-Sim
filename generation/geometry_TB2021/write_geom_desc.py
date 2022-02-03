@@ -145,28 +145,10 @@ def defineLayerConfig(conf):
     # probably for 2021 deprecate the bool, second element in appends below
     if conf in W_Confs.keys():
         layerconfig = W_Confs[conf]
-        #layerconfig.append( [0, True, 320] ) # no absorber
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [1, True, 500] ) # 0.5mm wafer
-        #layerconfig.append( [1, True, 500] ) # 0.5mm wafer
-        #layerconfig.append( [1, True, 500] ) # 0.5mm wafer
-        #layerconfig.append( [1, True, 500] ) # 0.5mm wafer
-        #layerconfig.append( [1, True, 320] )
-        #layerconfig.append( [2, True, 320] )
-        #layerconfig.append( [2, True, 320] )
-        #layerconfig.append( [2, True, 320] )
     else:
         print('unknown config', conf)
         exit
-
     return layerconfig
-
-
 
 if len(sys.argv)==2:
     #iconfig=int(sys.argv[1])
