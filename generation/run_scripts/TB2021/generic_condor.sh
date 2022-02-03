@@ -18,7 +18,7 @@ conf=$3
 geometry_folder="/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/generation/geometry_TB2021"
 ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-03/"
 local=$PWD
-data_path="/data_ilc/flc/jimenez/simulations/TB2021/"
+data_path="/data_ilc/flc/jimenez/simulations/TB2021/CONF${conf}/"
 
 #macfile=$4
 macfile=grid_-40-40_${particle}_${energy}GeV.mac
@@ -73,8 +73,8 @@ SIM.runType = "run"
 #SIM.numberOfEvents = $nevt
 
 SIM.skipNEvents = 0
-SIM.outputFile = "${local}/data/ECAL_${label}.slcio"
-#SIM.outputFile = "${data_path}/data/ECAL_${label}.slcio"
+#SIM.outputFile = "${local}/data/ECAL_${label}.slcio"
+SIM.outputFile = "${data_path}/ECAL_${label}.slcio"
 
 SIM.compactFile = "${geometry_folder}/ECAL_CONF${conf}.xml"
 SIM.dumpSteeringFile = "${local}/steer/dumpSteering.xml"
@@ -102,7 +102,7 @@ EOF
     /opt/exp_soft/cms/t3/t3submit -short $condorsh
     #rm ${condorsh} ${condorsub}
     cd -
-    #break
+    break
   done
 done
 
