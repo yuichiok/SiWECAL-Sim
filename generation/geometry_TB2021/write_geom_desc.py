@@ -97,6 +97,7 @@ def write_geom_xml(layerconfig):
     # TB2021: 29.7 (distance from plastic to first rail) + 30 (first two rails empty) 
     # A Gallas: add 2.1 of air but I don't agree, as first (W/Air) box below adds 4.2 Air. 
     print('<slice material = "Air"         thickness = "59.7*mm"   vis="Invisible"/>')
+    # TODO: Line above should be handled with slab boolean in layer (using first two empty layers)
     # the layers of the prototype
     for layer in layerconfig:
         nAbs=layer[0]
@@ -141,11 +142,8 @@ def write_geom_xml(layerconfig):
 def defineLayerConfig(conf):
     # Deprecate!!
     layerconfig=[]
-    if conf == "TB2021_0":
-        print("Not implemented yet, conf 0")
-        exit
     # probably for 2021 deprecate the bool, second element in appends below
-    elif conf in W_Confs.keys():
+    if conf in W_Confs.keys():
         layerconfig = W_Confs[conf]
         #layerconfig.append( [0, True, 320] ) # no absorber
         #layerconfig.append( [1, True, 320] )
