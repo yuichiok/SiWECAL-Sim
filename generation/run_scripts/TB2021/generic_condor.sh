@@ -102,7 +102,7 @@ EOF
     /opt/exp_soft/cms/t3/t3submit -short $condorsh
     #rm ${condorsh} ${condorsub}
     cd -
-    break
+    #break
   done
 done
 
