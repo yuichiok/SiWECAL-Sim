@@ -18,14 +18,6 @@
 #include "UTIL/CellIDDecoder.h"
 #include "UTIL/CellIDEncoder.h"
 
-// -- CALICE Header
-#include "MappingProcessor.hh"
-#include "CellDescriptionProcessor.hh"
-#include "Ahc2Calibrations.hh"
-#include "Ahc2CalibrationsProcessor.hh"
-#include "CellIterator.hh"
-#include "Ahc2CalibrationStatusBits.hh"
-
 // ----- include for verbosity dependend logging ---------
 #include "marlin/VerbosityLevels.h"
 #include "marlin/Exceptions.h"
