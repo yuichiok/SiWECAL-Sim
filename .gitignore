@@ -37,6 +37,7 @@
 *.app
 
 # Data
+*.root
 *.slcio
 *.pickle
 *.npy
