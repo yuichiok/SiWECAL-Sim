@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iterator>
 
 
 #include <EVENT/LCCollection.h>
@@ -48,13 +49,13 @@ namespace CALICE
     // register steering parameters: name, description, class-variable, default value
 
     vector<string> in_calorimInpCollections;
-    registerProcessorParameter("ShapingProcessor_simHitInputCollections",
+    registerProcessorParameter("Input_Collections",
                                "vector of collections for input",
                                _calorimInpCollections,
                                in_calorimInpCollections);
 
     vector<string> in_calorimOutCollections;
-    registerProcessorParameter("ShapingProcessor_calHitOutputCollections",
+    registerProcessorParameter("Output_Collections",
                                "vector of collections for output",
                                _calorimOutCollections,
                                in_calorimOutCollections);
@@ -105,11 +106,13 @@ namespace CALICE
                                "Fast Shaper noise",
                                _FSNoise,
                                double(1/12));
+                               //double(1));
 
     registerProcessorParameter("ShapingProcessor_SSNoise",
                                "Slow Shaper noise",
                                _SSNoise,
                                double(1/20));
+                               //double(1/5));
 
     registerProcessorParameter("ShapingProcessor_useHistInput",
                                "Use histogrammed hits as input for shaper",
@@ -134,6 +137,18 @@ namespace CALICE
                                "MIP value in GeV",
                                _MIPvalue,
                                double(0.0000923));
+    
+    vector<string> MIP2GeVFactorsExample;
+    registerProcessorParameter("MIP2GeVFactors",
+                               "vector of conversion factors",
+                               _MIP2GeVFactors,
+                               MIP2GeVFactorsExample);
+    
+    vector<string> FixedPosZExample;
+    registerProcessorParameter("FixedPosZ",
+                               "vector of z layer positions",
+                               _FixedPosZ,
+                               FixedPosZExample);
     
     registerProcessorParameter("tauF",
                                "Tau parameter of Fast Shaper",
@@ -172,11 +187,15 @@ namespace CALICE
 
     _threshold = _MIPvalue * _MIPThreshold;   
     cout << "Th is mip*" << to_string(_MIPThreshold) << " = " <<  to_string(_threshold);
-    // TODO: should be done in steering file!?
-    //_nThr = 2;
-    //_Thrs = {_MIPvalue/3, _MIPvalue/4};
-    //_FSTime.resize(_nThr);
-    //_SSRead.resize(_nThr);
+
+    // for(const auto& factor: _MIP2GeVFactors) _MIP2GeVFactors_float.push_back(stof(factor));
+    // for(const auto& positionZ: _FixedPosZ) _FixedPosZ_float.push_back(stof(positionZ));
+    for (int ilayer = 0; ilayer < _FixedPosZ.size(); ilayer++)
+    {
+      _MIP2GeVFactors_float.push_back(stof(_MIP2GeVFactors[ilayer]));
+      _FixedPosZ_float.push_back(stof(_FixedPosZ[ilayer]));
+    
+    }
 
     _rootout = new TFile(_shapingAuxFilename.c_str(), "RECREATE");
     _treeout = new TTree("CalHits","Calorimeter hits");
@@ -246,10 +265,6 @@ namespace CALICE
           std::vector<float>::iterator tmin;
 
           streamlog_out(DEBUG) << "Opened collection " << _inputColName << " contains " << noHits << " hits" << endl;
-          //_encoding = inputCol->getParameters().getStringVal("CellIDEncoding");
-
-          //CellIDDecoder<SimCalorimeterHit> decoder(inputCol);
-          //CellIDEncoder<CalorimeterHitImpl> encoder(_encoding.c_str(), calOutVec);
 
           for (int i = 0; i < noHits; i++){
             SimCalorimeterHit *aSimCalorimHit = dynamic_cast<SimCalorimeterHit*>(inputCol->getElementAt(i));
@@ -266,6 +281,12 @@ namespace CALICE
             // const int nImps = 4;
             vector<Imp> Imps(noSubHits);
 
+            // Find out hit layer
+            // vector<float>::iterator itr = std::find(_FixedPosZ_float.begin(), _FixedPosZ_float.end(), aSimCalorimHit->getPosition()[2]);
+            // unsigned int hit_layer_index = std::distance(_FixedPosZ_float, itr);
+            int hit_layer_index = std::distance(_FixedPosZ_float.begin(), std::find(_FixedPosZ_float.begin(), _FixedPosZ_float.end(), aSimCalorimHit->getPosition()[2]));
+            float this_MIPvalue = _MIP2GeVFactors_float[hit_layer_index]; 
+
             for(int j = 0; j < noSubHits; j++){//fill hit time and deposited energy per sub-hit
 
               // const float *_hitStep = aSimCalorimHit->getStepPosition(j);
@@ -278,16 +299,15 @@ namespace CALICE
               // if(_hitOntileX < halfdS || _hitOntileX > (_tileEdgeX-halfdS) || _hitOntileY < halfdS || _hitOntileY > (_tileEdgeY-halfdS)) _edepstep = 0.0;
 
               Imps[j] = {
-                (float)aSimCalorimHit->getTimeCont(j),
-                (float)aSimCalorimHit->getEnergyCont(j)/_MIPvalue
+                (double)aSimCalorimHit->getTimeCont(j),
+                (double)aSimCalorimHit->getEnergyCont(j)/this_MIPvalue
               };
               subhitsTime[j] = (float)aSimCalorimHit->getTimeCont(j);
               subhitsEnergy[j] = _edepstep;
 
             }//end loop on subhits
 
-            // if ((_nEvt == 0) && (i == 0)) _plotHit  = true;
-            if ((float)aSimCalorimHit->getEnergy()/_MIPvalue > 2 and _nEvt > 3)  _plotHit  = true;
+            if ((_nEvt == 0) && (i == 0)) _plotHit  = true;
             else _plotHit = false;
 
             //PulseShapeCRRC(Imps, _plotHit);
@@ -303,11 +323,6 @@ namespace CALICE
 
             const float *hitpos = aSimCalorimHit->getPosition();
 
-            // This should be done for each threshold!!
-            // 1. Manage it at steering file: one run <==> one threshold
-            // 2. Create as many collections as thrs there are
-            // aCalorimHit->setTime(_FSTime[0]);
-            // aCalorimHit->setEnergy(_SSRead[0]);
             aCalorimHit->setTime(_FSTime);
             aCalorimHit->setEnergy(_SSRead);
             aCalorimHit->setPosition(hitpos);
@@ -318,8 +333,6 @@ namespace CALICE
 
             streamlog_out(DEBUG) << "Added hit to new collection " << _calorimOutCollections.at(icol) << endl;
 
-            //time = _FSTime[0];
-            //energy = _SSRead[0];
             time_sha = _FSTime;
             energy_sha = _SSRead;
             posx = hitpos[0];
@@ -506,7 +519,6 @@ namespace CALICE
 
     for (int ibin = 0; ibin < _nbinsF; ibin++){
       shapedBin = shaper(h_FS->GetBinCenter(ibin), _tauF, _nF, Imps);
-      //if (_filterNoise) shapedBin = gRandom->Gaus(shapedBin, 1/12);
       if (_filterNoise) shapedBin = gRandom->Gaus(shapedBin, _FSNoise);
       h_FS->SetBinContent(ibin, shapedBin);
 
@@ -514,12 +526,10 @@ namespace CALICE
     
     for (int ibin = 0; ibin < _nbinsS; ibin++){
       shapedBin = shaper(h_SS->GetBinCenter(ibin), _tauS, _nS, Imps);
-      //if (_filterNoise) shapedBin = gRandom->Gaus(shapedBin, 1/20);
       if (_filterNoise) shapedBin = gRandom->Gaus(shapedBin, _SSNoise);
       h_SS->SetBinContent(ibin, shapedBin);
     }
 
-    //if (h_FS->FindFirstBinAbove(_Thrs[0]) >= 0) {
     if (h_FS->FindFirstBinAbove(_MIPThreshold) >= 0) {
       maxFS = h_FS->GetMaximum();
       maxSS = h_SS->GetMaximum();
@@ -538,16 +548,11 @@ namespace CALICE
       //int BinThr = h_FS->FindFirstBinAbove(_Thrs[iThr]);
     int BinThr = h_FS->FindFirstBinAbove(_MIPThreshold);
     if (BinThr >= 0) {
-      // _FSTime[iThr] = h_FS->GetBinCenter(BinThr);
-      // _SSRead[iThr] = h_SS->GetBinContent(h_SS->FindBin(_FSTime[iThr] + _delay));
-      // //cout << "FSTime, SSRead: "<< _FSTime[iThr] << ", " << _SSRead[iThr] << "\n";
       _FSTime = h_FS->GetBinCenter(BinThr);
       _SSRead = h_SS->GetBinContent(h_SS->FindBin(_FSTime + _delay));
 
     }
     else {
-      //_FSTime[iThr] = 0.;
-      //_SSRead[iThr] = 0.;
       _FSTime = 0.;
       _SSRead = 0.;
     }
@@ -567,7 +572,7 @@ namespace CALICE
       h_FS->Draw("SAME");
       h_SS->Draw("SAME");
       hInput->GetXaxis()->SetRangeUser(0, 1.1*t_maxSS);
-      hInput->GetYaxis()->SetRangeUser(0, 1.1*hInput->GetMaximum());
+      hInput->GetYaxis()->SetRangeUser(0, 1.3*hInput->GetMaximum());
       c1->Update();
       TLine *line_thr = new TLine(0, _MIPThreshold, 1.1*t_maxSS, _MIPThreshold);
       line_thr->SetLineStyle(9);

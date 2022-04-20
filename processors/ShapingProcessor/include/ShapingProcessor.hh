@@ -101,6 +101,10 @@ namespace CALICE
 
     vector<std::string> _calorimInpCollections;/**<input collection name*/
     vector<std::string> _calorimOutCollections;/**<output collection name*/
+    vector<std::string> _MIP2GeVFactors;
+    vector<std::string> _FixedPosZ;
+    vector<float> _MIP2GeVFactors_float;
+    vector<float> _FixedPosZ_float;
 
     // std::string _encoding;
 

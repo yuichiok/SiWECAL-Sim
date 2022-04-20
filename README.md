@@ -1,29 +1,12 @@
+# Simulation tools for SiW ECAL prototype
 
-# SiWECAL-Sim
-Simulation tools for the CALICE SiW-ECAL technological prototype
+## Structure
 
-Works with ILCSOft,
-
-source /cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-01/init_ilcsoft.sh
-
-# Repository structure
- 
-## generation
-Includes tools for the generation using DD4HEP
-
-### processors/
-
-Processors for digitisation, raw-to-root, raw-tolcio convertors, analysis of LCIO files for gev2mip and viceversa
-etc
-
-### analysis/
-
-Useful root/python scripts for fitting, plotting etc
-
-
-
-
+- `generation`: ddsim-based simulation for TB conditions.
+- `processors`: Marlin processors for simulating the electronics readout chain (aka digitization). 
+- `masking`: A tool for applying in the simulations the masking used on data.
+- `analysis`: Validation and comparison of simulation and data.
 
 # Contact persons
 A. Irles: adrian.irles at ific.uv.es
-F. A. Jimenez: fabricio.jm at cern.ch
+F. Jiménez Morales: fabricio.jm at cern.ch

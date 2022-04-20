@@ -1,0 +1,366 @@
+#include "LCIO2BuildProcessor.hh"
+
+#include <iostream>
+#include <cstdlib>
+#include <map>
+
+// ---- LCIO Headers
+#include <EVENT/LCCollection.h>
+#include <IMPL/LCCollectionVec.h>
+#include <EVENT/MCParticle.h>
+#include "IMPL/CalorimeterHitImpl.h"
+#include "IMPL/SimCalorimeterHitImpl.h"
+#include <IMPL/LCFlagImpl.h>
+#include "UTIL/LCTypedVector.h"
+// #include "UTIL/CellIDDecoder.h"
+// #include "UTIL/CellIDEncoder.h"
+#include "UTIL/BitField64.h"
+
+// ----- include for verbosity dependend logging ---------
+#include "marlin/VerbosityLevels.h"
+
+#ifdef MARLIN_USE_AIDA
+#include <marlin/AIDAProcessor.h>
+#include <AIDA/IHistogramFactory.h>
+#include <AIDA/ICloud1D.h>
+//#include <AIDA/IHistogram1D.h>
+#endif // MARLIN_USE_AIDA
+
+//ROOT
+#include <TH1.h>
+#include <TH2.h>
+#include "TF1.h"
+#include <TString.h>
+#include <TFile.h>
+#include <TStyle.h>
+#include <TPaveStats.h>
+#include <TCanvas.h>
+#include <TFitResult.h>
+#include <TSpectrum.h>
+#include "TMath.h"
+#include "TROOT.h"
+#include <TTree.h>
+#include <TInterpreter.h>
+
+
+#include <fstream>
+#include <sstream>
+
+//  //From Adrian
+#include <vector>
+#include <algorithm>
+
+
+using namespace lcio ;
+using namespace marlin ;
+using namespace std;
+
+namespace CALICE
+{
+
+  LCIO2BuildProcessor aLCIO2BuildProcessor;
+
+  LCIO2BuildProcessor::LCIO2BuildProcessor() : Processor("LCIO2BuildProcessor")
+  {
+
+    vector<string> calorimInpCollectionsExample;
+    registerProcessorParameter("Input_Collections",
+                               "vector of collections for input",
+                               _calorimInpCollections,
+                               calorimInpCollectionsExample);
+
+
+    string eConfNameExample;
+    registerProcessorParameter("Energy_Conf_Name",
+                               "Name to identify output file",
+                               _eConfName,
+                               eConfNameExample);
+    
+    vector<string> siThicknessesExample;
+    registerProcessorParameter("SiThicknesses",
+                               "vector of Silicon thicknesses per layer",
+                               _siThicknesses,
+                               siThicknessesExample);
+    
+    // registerProcessorParameter("hitType",
+    //                            "Hit type (SimCalorimeterHit or CalorimeterHit)",
+    //                            _hitType,
+    //                            "SimCalorimeterHit");
+    
+  }
+
+  /************************************************************************************/
+
+  void LCIO2BuildProcessor::init()
+  {
+    streamlog_out(DEBUG) << "init called" << std::endl ;
+
+    printParameters();
+
+    // gInterpreter->GenerateDictionary("vector<vector<float> >", "vector");
+    // gInterpreter->GenerateDictionary("vector<vector<int> >", "vector");
+
+    _nRun = 0 ;
+    _nEvt = 0 ;
+    _rootout = new TFile(_eConfName.c_str(), "RECREATE");
+    _treeout = new TTree("SLCIOConverted", "From SLCIO");
+    // _treeout->Branch("nHits", &_nHits);
+    // Hit length
+    //_treeout->Branch("_nSubHits", &_nSubHits);
+    // _treeout->Branch("energy", &_energy);
+    // _treeout->Branch("positionX", &_positionX);
+    // _treeout->Branch("positionY", &_positionY);
+    // _treeout->Branch("positionZ", &_positionZ);
+    _treeout->Branch("event", &event);
+    _treeout->Branch("spill", &spill);
+    _treeout->Branch("bcid", &bcid);
+    _treeout->Branch("bcid_first_sca_full", &bcid_first_sca_full);
+    _treeout->Branch("bcid_merge_end", &bcid_merge_end);
+    _treeout->Branch("bcid_prev", &bcid_prev);
+    _treeout->Branch("bcid_next", &bcid_next);
+    _treeout->Branch("nhit_slab", &nhit_slab);
+    _treeout->Branch("nhit_chip", &nhit_chip);
+    _treeout->Branch("nhit_chan", &nhit_chan);
+    _treeout->Branch("nhit_len", &nhit_len);
+
+    _treeout->Branch("sum_hg", &sum_hg);
+    _treeout->Branch("sum_energy", &sum_energy);
+    // _treeout->Branch("sum_energy_w", &sum_energy_w);
+    _treeout->Branch("sum_energy_lg", &sum_energy_lg);
+
+    _treeout->Branch("hit_slab", &hit_slab);
+    _treeout->Branch("hit_chip", &hit_chip);
+    _treeout->Branch("hit_chan", &hit_chan);
+    _treeout->Branch("hit_sca", &hit_sca);
+    _treeout->Branch("hit_hg", &hit_hg);
+    _treeout->Branch("hit_lg", &hit_lg);
+    _treeout->Branch("hit_n_scas_filled", &hit_n_scas_filled);
+    _treeout->Branch("hit_isHit", &hit_isHit);
+    _treeout->Branch("hit_isMasked", &hit_isMasked);
+    _treeout->Branch("hit_isCommissioned", &hit_isCommissioned);
+
+    _treeout->Branch("hit_energy", &hit_energy);
+    _treeout->Branch("hit_energy_w", &hit_energy_w);
+    _treeout->Branch("hit_energy_lg", &hit_energy_lg);
+    _treeout->Branch("hit_x", &hit_x);
+    _treeout->Branch("hit_y", &hit_y);
+    _treeout->Branch("hit_z", &hit_z);
+    // _treeout->Branch("cellID0", &_cellID0);
+    // _treeout->Branch("cellID1", &_cellID1);
+
+    //_treeout->Branch("_nMCParticles", &_nMCParticles);
+    // _treeout->Branch("nMCContributions", &_nMCContributions);
+    // _treeout->Branch("colType", &_colType);
+    _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
+                  111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
+                  216.06};
+    _deltaZ = 0.1;
+    _printType = true;
+  }
+
+
+  /************************************************************************************/
+  void LCIO2BuildProcessor::processRunHeader( LCRunHeader* run)
+  {
+    _nRun++ ;
+  }
+
+  void LCIO2BuildProcessor::processEvent( LCEvent * evt )
+  {
+    
+    int evtNumber = evt->getEventNumber();
+    if ((evtNumber % 1000) == 0)
+    streamlog_out(DEBUG) << " \n ---------> Event: "<<evtNumber<<"!Collections!! <-------------\n" << std::endl;
+
+    //Get the list of collections in the event
+    const std::vector<std::string> *cnames = evt->getCollectionNames();
+    
+    // Here add MC particle truth loop
+    // LCCollection *MCParticleCollection = evt->getCollection("MCParticle");
+    // int noParticles = MCParticleCollection->getNumberOfElements();
+    std::vector<float> this_energyCont;
+    // int this_nMC;
+    for(unsigned int icol = 0; icol < _calorimInpCollections.size(); icol++)
+    {
+      if( std::find(cnames->begin(), cnames->end(), _calorimInpCollections.at(icol)) != cnames->end() )
+      {
+        string _inputColName = _calorimInpCollections.at(icol);
+
+        LCCollection *inputCalorimCollection = 0;
+        try
+        {
+          inputCalorimCollection = evt->getCollection(_inputColName);
+        }
+        catch (EVENT::DataNotAvailableException &e)
+        {
+          streamlog_out(WARNING)<< "missing collection "
+          <<_inputColName<<endl<<e.what()<<endl;
+        }
+        if (inputCalorimCollection != 0){
+
+          int noHits = inputCalorimCollection->getNumberOfElements();
+
+          event = evtNumber;
+          spill = -1;
+          bcid = -1;
+          bcid_first_sca_full = -1;
+          bcid_merge_end = -1;
+          bcid_prev = -1;
+          bcid_next = -1;
+          nhit_chip = -1;
+          nhit_chan = -1;
+          nhit_len = noHits;
+          nhit_slab = 0;
+
+          sum_hg = -1;
+          sum_energy_lg = -1;
+
+          sum_energy = 0.;
+          // sum_energy_w = 0.;
+          //
+          //int slab_index;
+
+          for (int i = 0; i < noHits; i++)
+          {
+            SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
+            //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
+            // hitCast(*aHit);
+
+            hit_chip.push_back(-1);
+            hit_chan.push_back(-1);
+            hit_sca.push_back(-1);
+            hit_hg.push_back(-1);
+            hit_lg.push_back(-1);
+            hit_n_scas_filled.push_back(-1);
+            hit_isHit.push_back(-1);
+            hit_isMasked.push_back(-1);
+            hit_isCommissioned.push_back(-1);
+
+            hit_energy.push_back(aHit->getEnergy());
+            sum_energy += aHit->getEnergy();
+            hit_energy_lg.push_back(-1.);
+            hit_x.push_back(aHit->getPosition()[0]);
+            hit_y.push_back(aHit->getPosition()[1]);
+            hit_z.push_back(aHit->getPosition()[2]);
+
+            
+            // Need _deltaZ tolerance to find layer
+            for (int i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
+              if (_FixedPosZ[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
+                  _FixedPosZ[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
+                hit_slab.push_back(i_slab);
+              }
+            }
+
+            // Shorter implementation if perfect equality between hit_z and _FixedPosZ
+            // auto slab_index = std::find(_FixedPosZ.begin(), _FixedPosZ.end(), aHit->getPosition()[2]);
+            // if (slab_index != _FixedPosZ.end()) hit_slab.push_back(std::distance(_FixedPosZ.begin(), slab_index));
+            
+          }//end loop over SimCalorimeterHits
+          
+          std::vector<float> slabs_hit;
+          slabs_hit = hit_z;
+          
+          std::sort(slabs_hit.begin(), slabs_hit.end());
+          
+          std::vector<float>::iterator it;
+          it = std::unique(slabs_hit.begin(), slabs_hit.end());
+          slabs_hit.resize(std::distance(slabs_hit.begin(),it));
+          nhit_slab = slabs_hit.size();
+          //std::cout << "End of hit loop"<< endl;
+        }//end if col
+        
+        
+      }//end if find col names
+      //std::cout << "Break colnames";
+
+          
+    }//end for loop
+
+  // std::cout << "After loop, before fill";
+  _treeout->Fill();
+  //_nSubHits.clear();
+  // Clear vectors
+  hit_slab.clear();
+  hit_chip.clear();
+  hit_chan.clear();
+  hit_sca.clear();
+  hit_hg.clear();
+  hit_lg.clear();
+  hit_n_scas_filled.clear();
+  hit_isHit.clear();
+  hit_isMasked.clear();
+  hit_isCommissioned.clear();
+
+  hit_energy.clear();
+  hit_energy_lg.clear();
+  hit_x.clear();
+  hit_y.clear();
+  hit_z.clear();
+  //_cellID0.clear();
+  // _cellID1.clear();
+  //_nMCParticles.clear();
+  // _nMCContributions.clear();
+  //-- note: this will not be printed if compiled w/o MARLINDEBUG=1 !
+
+  streamlog_out(DEBUG) << "   processing event: " << evt->getEventNumber()
+  << "   in run:  " << evt->getRunNumber() << std::endl ;
+
+
+  _nEvt ++ ;
+
+  }
+
+  /************************************************************************************/
+
+  void LCIO2BuildProcessor::check( LCEvent * evt ) {
+    // nothing to check here - could be used to fill checkplots in reconstruction processor
+  }
+
+  /************************************************************************************/
+  void LCIO2BuildProcessor::end(){
+
+    _treeout->Write();
+    _rootout->Write("", TObject::kOverwrite);
+    _rootout->Close();
+    
+    std::cout << "LCIO2BuildProcessor::end()  " << name()
+      << " processed " << _nEvt << " events in " << _nRun << " runs "
+      << "FLAG"
+      << std::endl ;
+
+  }
+
+  /************************************************************************************/
+  // void LCIO2BuildProcessor::hitCast(){
+  // }
+  
+  // SimCalorimeterHit LCIO2BuildProcessor::hitCast(SimCalorimeterHit* aHit){
+  //   return dynamic_cast<SimCalorimeterHit*>aHit;
+  // }
+
+  // SimCalorimeterHit LCIO2BuildProcessor::hitCast(SimCalorimeterHit* aHit){
+  //   return dynamic_cast<SimCalorimeterHit*>aHit;
+  // }
+
+  // EVENT::CalorimeterHit* LCIO2BuildProcessor::hitCast(EVENT::CalorimeterHit* aHit){
+  //   return dynamic_cast<CalorimeterHit*>aHit;
+  // }
+
+  /************************************************************************************/
+  void LCIO2BuildProcessor::printParameters(){
+    std::cerr << "============= LCIO2Build Processor =================" <<std::endl;
+    //std::cerr << "Converting Simulation Hits from GeV to MIP" <<std::endl;
+    std::cerr << "Converting Simulation Hits to build ROOT file " <<std::endl;
+    std::cerr << "Input Collection name : "; for(unsigned int i = 0; i < _calorimInpCollections.size(); i++) std::cerr << _calorimInpCollections.at(i) << " ";
+    std::cerr << std::endl;
+    //std::cerr << "Output Collection name : "; for(unsigned int i = 0; i < _calorimOutCollections.size(); i++) std::cerr << _calorimOutCollections.at(i) << " ";
+    std::cerr << std::endl;
+    //std::cerr << "MIP: " << _MIPvalue << " GeV" <<std::endl;
+    std::cerr << "=======================================================" <<std::endl;
+    return;
+
+  }
+
+
+}

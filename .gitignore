@@ -42,10 +42,22 @@
 *.npy
 
 # Folders
-generation/run_scripts/TB2021/steer/*
-generation/run_scripts/TB2021/log/*
-generation/run_scripts/TB2021/data/*
-generation/run_scripts/TB2022/steer/*
-generation/run_scripts/TB2022/log/*
-generation/run_scripts/TB2022/data/*
-generation/run_scripts/TB2022/macros/*
+generation/run_scripts/TB2017-06/steer/*
+generation/run_scripts/TB2017-06/log/*
+generation/run_scripts/TB2017-06/data/*
+generation/run_scripts/TB2017-06/macros/*
+generation/run_scripts/TB2021-11/steer/*
+generation/run_scripts/TB2021-11/log/*
+generation/run_scripts/TB2021-11/data/*
+generation/run_scripts/TB2021-11/macros/*
+generation/run_scripts/TB2022-03/steer/*
+generation/run_scripts/TB2022-03/log/*
+generation/run_scripts/TB2022-03/data/*
+generation/run_scripts/TB2022-03/macros/*
+generation/plotting/*
+processors/build/*
+processors/lib/*
+
+!processors/steering/
+processors/steering/*
+!processors/steering/templates/

@@ -91,6 +91,7 @@ namespace CALICE
 
     vector<std::string> _calorimInpCollections;/**<input collection name*/
     vector<std::string> _calorimOutCollections;/**<output collection name*/
+    vector<std::string> _siThicknesses;
 
     std::string _encoding;
 
@@ -116,10 +117,11 @@ namespace CALICE
     std::vector<float> _FixedPosXY ;
     std::vector<float> _FixedPosZ ;
 
-    // Forgot to prepend _, number of cells, layers should be set in steering
-    TH1F* energyHistos[33][33][7];
-    TH1F* _timeHistos[33][33][7];
-    TH1F* _timeHistos_layer[7];
+    // Forgot to prepstringend _, number of cells, layers should be set in steering
+    TH1F* energyHistos[33][33][15];
+    TH1F* layerEnergyHistos[15];
+    TH1F* _timeHistos[33][33][15];
+    TH1F* _timeHistos_layer[15];
     TFile* _rootout;
     TDirectory* _high_mu_dir;
     // Prototype for having those as ttrees

@@ -70,7 +70,10 @@ def writeCommonStuff(config):
     print('</display>')
     print('<readouts>')
     print('<readout name="SiEcalCollection">')
-    print('<segmentation type="TiledLayerGridXY" grid_size_x="Ecal_CellSizeX" grid_size_y="Ecal_CellSizeX" offset_x="-Ecal_dim_x/2.0" offset_y="-Ecal_dim_y/2.0" />')
+    # Line below gives 33 cells and cell centers located at the borders of actual cells!
+    #print('<segmentation type="TiledLayerGridXY" grid_size_x="Ecal_CellSizeX" grid_size_y="Ecal_CellSizeX" offset_x="-Ecal_dim_x/2.0" offset_y="-Ecal_dim_y/2.0" />')
+    # Fix (Daniel Jeans):
+    print('<segmentation type="TiledLayerGridXY" grid_size_x="Ecal_CellSizeX" grid_size_y="Ecal_CellSizeX" offset_x="-(Ecal_dim_x-Ecal_CellSizeX)/2.0" offset_y="-(Ecal_dim_x-Ecal_CellSizeX)/2.0" />')
     print('<id>system:8,layer:8,x:8,y:8,slice:4</id>')
     print('</readout>')
     print('</readouts>')

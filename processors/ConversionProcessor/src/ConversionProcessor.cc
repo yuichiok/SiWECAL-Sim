@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
+
 
 // ---- LCIO Headers
 #include <EVENT/LCCollection.h>
@@ -30,7 +32,7 @@
 #include <TH2.h>
 #include "TF1.h"
 #include <TF1Convolution.h>
-#include <TString.h>
+//#include <TString.h>
 #include <TFile.h>
 #include <TStyle.h>
 #include <TPaveStats.h>
@@ -68,6 +70,12 @@ namespace CALICE
                                "vector of collections for input",
                                _calorimInpCollections,
                                calorimInpCollectionsExample);
+    
+    vector<string> siThicknessesExample;
+    registerProcessorParameter("SiThicknesses",
+                               "vector of Silicon thicknesses per layer",
+                               _siThicknesses,
+                               siThicknessesExample);
 
 
     string eConfNameExample;
@@ -101,10 +109,27 @@ namespace CALICE
     _maxHits = 0;
     _writeHisto_mu_thr = 0.000098; // May be a steering file? Or maybe not if params are stored in ttrees
     _writeHisto = false;
-    for (float val = -88.0; val <= 88.0; val += 5.5) _FixedPosXY.push_back(val);
+    // Wrong tiling
+    // for (float val = -88.0; val <= 88.0; val += 5.5) _FixedPosXY.push_back(val);
+    for (float val = -85.25; val <= 85.25; val += 5.5) _FixedPosXY.push_back(val);
     // Same for the three confs
-    _FixedPosZ = {12.327500, 27.327499, 42.327499, 57.327499,\
-                  72.327499, 87.327499, 147.327499};
+    // _FixedPosZ = {12.327500, 27.327499, 42.327499, 57.327499,
+    //               72.327499, 87.327499, 147.327499};
+    _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
+                  111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
+                  216.06};
+    
+    // Define unique thickness values (2017: single value, 2021: two, 2022: three)
+    // vector<float> float_siThicknesses(_siThicknesses.begin(), _siThicknesses.end());
+    vector<float> float_siThicknesses(_FixedPosZ.size());
+    for (int iz = 0; iz < _FixedPosZ.size(); iz++)
+    {
+      float_siThicknesses[iz] = stof(_siThicknesses[iz]);
+    }
+    auto _unique_siThicknesses = float_siThicknesses;
+    auto it = unique(float_siThicknesses.begin(), float_siThicknesses.end());
+    _unique_siThicknesses.resize(distance(float_siThicknesses.begin(), it));
+    
 
     // Prototype for TTree in params
     // TTree *_fitParams = new TTree("FitParams","Energy cell fit parameters");
@@ -120,7 +145,7 @@ namespace CALICE
     
     // Fit histos, gauss, landau
     _gauss_c = TH1F("gauss_c", "Gauss constant distribution", 100, 0., 6000.);
-    _gauss_mu = TH1F("gauss_mu", "Gauss mu distribution", 400, 0.00005, 0.00015);
+    _gauss_mu = TH1F("gauss_mu", "Gauss mu distribution", 400, 0.00005, 0.001);
     _gauss_sigma = TH1F("gauss_sigma", "Gauss sigma distribution", 100, 0., 0.00002);
     _landau_c = TH1F("landau_c", "Landau constant distribution", 100, 0., 6000.);
     // For W confs
@@ -157,6 +182,10 @@ namespace CALICE
     }
     for (unsigned int iz = 0; iz < _FixedPosZ.size(); iz++)
     {
+      std::string lname = "Energy_GeV__layer_" + std::to_string(iz);
+      layerEnergyHistos[iz] = new TH1F(lname.c_str(), lname.c_str(),
+                                          100, 0., 0.001);
+
       std::string tname_layer = "Time_ns_layer_" + std::to_string(iz);
       _timeHistos_layer[iz] = new TH1F(tname_layer.c_str(), tname_layer.c_str(),
                                            1600, 1., 5);
@@ -165,15 +194,15 @@ namespace CALICE
     _rootout = new TFile(_eConfName.c_str(), "RECREATE");
     _high_mu_dir = _rootout->mkdir("high_mu");
     
-    int randint;
-    _randIndices.push_back(0);
-    gRandom = new TRandom(4357);
-    while (_randIndices.size() <= 100)  
-    {
-      randint = gRandom->Integer(1000);
-      if (std::find(_randIndices.begin(), _randIndices.end(), randint) == _randIndices.end())
-        _randIndices.push_back(randint);
-    }
+    // int randint;
+    // _randIndices.push_back(0);
+    // gRandom = new TRandom(4357);
+    // while (_randIndices.size() <= 100)  
+    // {
+    //   randint = gRandom->Integer(1000);
+    //   if (std::find(_randIndices.begin(), _randIndices.end(), randint) == _randIndices.end())
+    //     _randIndices.push_back(randint);
+    // }
 
   }
 
@@ -355,54 +384,73 @@ namespace CALICE
     // double chisqr;
     // int    ndf;
     
-   // int maxBin;
-   // int shift = 2;
-   int writeCounter = 0;
-   // double minFit, maxFit;
-   
-   for (unsigned int iz = 0; iz < _FixedPosZ.size(); iz++)
-   {
-      for (unsigned int ix = 0; ix < _FixedPosXY.size(); ix++)
-      {
-        for (unsigned int iy = 0; iy < _FixedPosXY.size(); iy++)
-        {
-          if (energyHistos[ix][iy][iz]->GetEntries() > 1000)
-          {
-           
-            if (_MIPFitMode == 1) {fitGaus(energyHistos[ix][iy][iz]);}
-            else if (_MIPFitMode == 2) {fitLandau(energyHistos[ix][iy][iz]);}
-            else if (_MIPFitMode == 3) {fitLanGaus(energyHistos[ix][iy][iz]);}
-            else
-            {
-              cout << "Invalid _MIPFitMode = " << std::to_string(_MIPFitMode) << "\n";
-              break;
-            }
+    // int maxBin;
+    // int shift = 2;
+    int writeCounter = 0;
+    // double minFit, maxFit;
 
-            if (writeCounter < 20 && !_writeHisto)
-            {
-              energyHistos[ix][iy][iz]->Write();
-              writeCounter++;
-            }
-            if (_writeHisto)
-            {
-              // TDirectory *_high_mu_dir = top->mkdir("high_mu");
-              _high_mu_dir->cd();
-              energyHistos[ix][iy][iz]->Write();
-              _rootout->cd();
-            }
+    for (unsigned int iz = 0; iz < _FixedPosZ.size(); iz++)
+    {
+       for (unsigned int ix = 0; ix < _FixedPosXY.size(); ix++)
+       {
+         for (unsigned int iy = 0; iy < _FixedPosXY.size(); iy++)
+         {
+           layerEnergyHistos[iz]->Add(energyHistos[ix][iy][iz]);
+           delete energyHistos[ix][iy][iz];
+         }
+       }
+       // for (unsigned int ix = 0; ix < _FixedPosXY.size(); ix++)
+       // {
+       //   for (unsigned int iy = 0; iy < _FixedPosXY.size(); iy++)
+       //   {
+       //     if (energyHistos[ix][iy][iz]->GetEntries() > 500)
+       //     {
+            
+             // if (_MIPFitMode == 1) {fitGaus(energyHistos[ix][iy][iz]);}
+             // else if (_MIPFitMode == 2) {fitLandau(energyHistos[ix][iy][iz]);}
+             // else if (_MIPFitMode == 3) {fitLanGaus(energyHistos[ix][iy][iz]);}
+             // else
+             // {
+             //   cout << "Invalid _MIPFitMode = " << std::to_string(_MIPFitMode) << "\n";
+             //   break;
+             // }
+             
+             if (_MIPFitMode == 1) {fitGaus(layerEnergyHistos[iz]);}
+             else if (_MIPFitMode == 2) {fitLandau(layerEnergyHistos[iz]);}
+             else if (_MIPFitMode == 3) {fitLanGaus(layerEnergyHistos[iz]);}
+             else
+             {
+               cout << "Invalid _MIPFitMode = " << std::to_string(_MIPFitMode) << "\n";
+               break;
+               }
 
-            //_timeHistos[ix][iy][iz]->Write(); // atm per-cell timing histos not needed...
+             layerEnergyHistos[iz]->Write();
+             // if (writeCounter < 20 && !_writeHisto)
+             // {
+             //   layerEnergyHistos[iz]->Write();
+             //   writeCounter++;
+             //  
+             // }
+             // if (_writeHisto)
+             // {
+             //   // TDirectory *_high_mu_dir = top->mkdir("high_mu");
+             //   _high_mu_dir->cd();
+             //   energyHistos[ix][iy][iz]->Write();
+             //   _rootout->cd();
+             // }
 
-          }
-          delete energyHistos[ix][iy][iz];
-        }
-      }
-    //_timeHistos_layer[iz]->Write();
-    }       
-   for (unsigned int iz = 0; iz < _FixedPosZ.size(); iz++)
-   {
-    _timeHistos_layer[iz]->Write();
-   }
+             //_timeHistos[ix][iy][iz]->Write(); // atm per-cell timing histos not needed...
+
+           // }
+           delete layerEnergyHistos[iz];
+       //   }
+       // }
+     //_timeHistos_layer[iz]->Write();
+     }       
+    for (unsigned int iz = 0; iz < _FixedPosZ.size(); iz++)
+    {
+     _timeHistos_layer[iz]->Write();
+    }
 
     // Fit box:
     //auto style = gROOT->GetStyle(style_name);
@@ -419,8 +467,8 @@ namespace CALICE
 
     _rootout->Write("", TObject::kOverwrite);
     _rootout->Close();
-    
-    std::cout << "Max hits in an event, max subhits in a hit " << _maxHits << ", " << _maxSubHits;
+    //    
+    //    std::cout << "Max hits in an event, max subhits in a hit " << _maxHits << ", " << _maxSubHits;
     
     
     std::cout << "ConversionProcessorProcessor::end()  " << name()

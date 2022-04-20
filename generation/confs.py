@@ -13,7 +13,8 @@ W_Confs = {
                           [0, True, 320],
                           [0, True, 320], # Careful, wf1 0.5
                           [0, True, 320],
-                          [0, True, 320] ],
+                          [0, True, 320],
+                        ],
     
     "TB2021-11_CONF1" : [ [0, True, 320], # no absorber
                           [3, True, 320],
@@ -29,7 +30,8 @@ W_Confs = {
                           [3, True, 320],
                           [6, True, 320], # Careful, wf1 0.5
                           [6, True, 320],
-                          [6, True, 320] ],
+                          [6, True, 320],
+                        ],
     
     "TB2022-03_CONF0" : [ [0, True, 650],
                           [0, True, 650],
@@ -45,7 +47,8 @@ W_Confs = {
                           [0, True, 320],
                           [0, True, 320],
                           [0, True, 320],
-                          [0, True, 320] ],
+                          [0, True, 320], # Careful, wf1 0.5 
+                        ],
     
     "TB2022-03_CONF1" : [ [4, True, 650],
                           [4, True, 650],
@@ -61,5 +64,40 @@ W_Confs = {
                           [6, True, 320],
                           [6, True, 320],
                           [6, True, 320],
-                          [6, True, 320] ],
+                          [6, True, 320], # Careful, wf1 0.5
+                        ],
+    
+    "TB2022-03_CONF2" : [ [0, True, 320],
+                          [0, True, 320],
+                          [0, True, 650],
+                          [0, True, 650],
+                          [0, True, 320],
+                          [0, True, 500],
+                          [0, True, 500],
+                          [0, True, 500],
+                          [0, True, 500],
+                          [0, True, 500],
+                          [0, True, 500],
+                          [0, True, 320],
+                          [0, True, 320],
+                          [0, True, 320],
+                          [0, True, 320], # Careful, wf1 0.5
+                        ],
+
+    "TB2022-03_CONF3" : [ [4, True, 320],
+                          [4, True, 320],
+                          [4, True, 650],
+                          [4, True, 650],
+                          [4, True, 320],
+                          [4, True, 500],
+                          [4, True, 500],
+                          [6, True, 500],
+                          [6, True, 500],
+                          [6, True, 500],
+                          [6, True, 500],
+                          [6, True, 320],
+                          [6, True, 320],
+                          [6, True, 320],
+                          [6, True, 320], # Careful, wf1 0.5
+                        ],
     }
