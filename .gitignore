@@ -40,24 +40,42 @@
 *.slcio
 *.pickle
 *.npy
+*.root
+
+# Sim macros, output and error logs
+*.mac
+*.sh.e*
+*.sh.o*
+
 
 # Folders
-generation/run_scripts/TB2017-06/steer/*
-generation/run_scripts/TB2017-06/log/*
-generation/run_scripts/TB2017-06/data/*
-generation/run_scripts/TB2017-06/macros/*
-generation/run_scripts/TB2021-11/steer/*
-generation/run_scripts/TB2021-11/log/*
-generation/run_scripts/TB2021-11/data/*
-generation/run_scripts/TB2021-11/macros/*
-generation/run_scripts/TB2022-03/steer/*
-generation/run_scripts/TB2022-03/log/*
-generation/run_scripts/TB2022-03/data/*
-generation/run_scripts/TB2022-03/macros/*
+# generation/run_scripts/TB2017-06/steer/*
+# generation/run_scripts/TB2017-06/log/*
+# generation/run_scripts/TB2017-06/data/*
+# generation/run_scripts/TB2017-06/macros/*
+# generation/run_scripts/TB2021-11/steer/*
+# generation/run_scripts/TB2021-11/log/*
+# generation/run_scripts/TB2021-11/data/*
+# generation/run_scripts/TB2021-11/macros/*
+# generation/run_scripts/TB2022-03/steer/*
+# generation/run_scripts/TB2022-03/log/*
+# generation/run_scripts/TB2022-03/data/*
+# generation/run_scripts/TB2022-03/macros/*
+generation/run_scripts/TB20*/steer/
+generation/run_scripts/TB20*/log/
+generation/run_scripts/TB20*/data/
 generation/plotting/*
+generation/benchmark
+
+processors/*/build/
+processors/*/lib/
+
 processors/build/*
 processors/lib/*
 
 !processors/steering/
 processors/steering/*
 !processors/steering/templates/
+
+*/build/*
+*/CMakeFiles/*

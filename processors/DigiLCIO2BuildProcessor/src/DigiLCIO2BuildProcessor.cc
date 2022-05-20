@@ -210,7 +210,7 @@ namespace CALICE
           nhit_chip = -1;
           nhit_chan = -1;
           nhit_len = noHits;
-          nhit_slab = 0;
+          // nhit_slab = 0;
 
           sum_hg = -1;
           sum_energy_lg = -1;
@@ -255,6 +255,16 @@ namespace CALICE
             // if (slab_index != _FixedPosZ.end()) hit_slab.push_back(std::distance(_FixedPosZ.begin(), slab_index));
 
           }//end loop over SimCalorimeterHits
+          std::vector<float> slabs_hit;
+          slabs_hit = hit_z;
+          
+          std::sort(slabs_hit.begin(), slabs_hit.end());
+          
+          std::vector<float>::iterator it;
+          it = std::unique(slabs_hit.begin(), slabs_hit.end());
+          slabs_hit.resize(std::distance(slabs_hit.begin(),it));
+          nhit_slab = slabs_hit.size();
+
           //std::cout << "End of hit loop"<< endl;
         }//end if col
         

@@ -21,9 +21,9 @@ local=$PWD
 data_path="/data_ilc/flc/jimenez/simulations/TB2022-03/CONF${conf}/lcio/"
 
 #macfile=$4
-macfile=grid_-40-40_${particle}_${energy}GeV.mac
+macfile=grid_${particle}_${energy}GeV.mac
 
-nevt=500
+nevt=5000
 
 cat > ${local}/macros/$macfile <<EOF
 
@@ -32,7 +32,7 @@ cat > ${local}/macros/$macfile <<EOF
 /gps/direction 0 0 1
 /gps/pos/type Beam
 /gps/pos/shape Circle
-/gps/pos/centre -40 -40 0 mm
+/gps/pos/centre -20 -45 0 mm
 /gps/pos/sigma_x 7 mm
 /gps/pos/sigma_y 7 mm
 /gps/ang/rot1 0 0 1
@@ -102,7 +102,7 @@ EOF
     /opt/exp_soft/cms/t3/t3submit -short $condorsh
     #rm ${condorsh} ${condorsub}
     cd -
-    break
+    #break
   done
 done
 

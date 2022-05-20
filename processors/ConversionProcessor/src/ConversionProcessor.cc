@@ -538,6 +538,7 @@ namespace CALICE
     if (f->GetParameter(1) > _writeHisto_mu_thr) {_writeHisto = true;}
     _gauss_sigma.Fill(f->GetParameter(2));
     _chi2ndf.Fill(f->GetChisquare()/f->GetNDF());
+    cout << f->GetParameter(1) << " +- " << f->GetParameter(2) << endl;
   }
 
   void ConversionProcessor::fitLandau(TH1F* h)

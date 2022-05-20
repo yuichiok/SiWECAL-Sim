@@ -151,10 +151,14 @@ namespace CALICE
     //_treeout->Branch("_nMCParticles", &_nMCParticles);
     // _treeout->Branch("nMCContributions", &_nMCContributions);
     // _treeout->Branch("colType", &_colType);
+    // _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
+    //               111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
+    //               216.06};
+    // ILD mode
     _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
                   111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
-                  216.06};
-    _deltaZ = 0.1;
+                  216.06, 216., 231., 246., 261., 276., 291., 306., 321., 336.};
+    _deltaZ = 2.;
     _printType = true;
   }
 

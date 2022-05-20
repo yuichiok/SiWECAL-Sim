@@ -24,26 +24,26 @@
       /data_ilc/flc/ECAL/Simulations/DESY-2017/data/ECAL_conf1_e-_1GeV.slcio
     </parameter-->
     <parameter name="LCIOInputFiles">
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_1.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_2.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_3.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_4.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_5.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_6.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_7.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_8.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_9.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_10.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_11.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_12.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_13.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_14.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_15.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_16.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_17.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_18.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_19.slcio
-      /data_ilc/flc/jimenez/simulations/TB2022/CONF0/ECAL_QGSP_BERT_conf0_e-_3.0GeV_20.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_1.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_2.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_3.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_4.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_5.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_6.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_7.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_8.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_9.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_10.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_11.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_12.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_13.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_14.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_15.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_16.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_17.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_18.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_19.slcio
+      /data_ilc/flc/jimenez/simulations/TB2022-03/CONF0/lcio/ECAL_QGSP_BERT_conf0_e-_3.0GeV_20.slcio
     </parameter>
     <!-- limit the number of processed records (run+evt): -->
     <!--parameter name="MaxRecordNumber" value="20000" /-->

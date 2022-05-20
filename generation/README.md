@@ -21,15 +21,22 @@ A script to write the geometry description for a given TB year and configuration
 
 Defined in `confs.py`. Per test beam session:
 
-- 2017-06 (DESY):
+- 2017-06 (DESY, legacy):
   - CONF0: No Tungsten.
   - CONF[1,2,3]: Tungsten for different shower parts.
-- 2021-11 (DESY):
+- [2021-11 (DESY)](https://twiki.cern.ch/twiki/bin/view/CALICE/SiWDESY202111):
   - CONF0: No Tungsten.
-  - CONF1: Tungsten.
-- 2022-03 (DESY):
-  - CONF[0,2]: No Tungsten, different slab (Si) ordering.
-  - CONF[1,3]: Same Tungsten configuration, different slab (Si) ordering.
+  - CONF1: 12 * 2.1 mm + 3 * 4.2 mm Tungsten.
+  - ()
+- [2022-03 (DESY)](https://twiki.cern.ch/twiki/bin/viewauth/CALICE/SiWDESY202203):
+  - CONF[0,2]: No Tungsten, different slab (Si thickness) arrangement (for different dates: 23/03 and 01/04).
+  - CONF[1,3]: Same Tungsten configuration, different slab arrangement.
+  - (For slab/ASU type arrangements, check [Layer arrangement](https://twiki.cern.ch/twiki/bin/viewauth/CALICE/SiWDESY202203#Layer_Arrangement).)
+- 2022-06 (CERN):
+  - CONF1: 7 x 2.8 mm + 8 x 4.2 mm Tungsten.
+  - CONF2: 7 x 4.2 mm + 8 x 5.6 mm Tungsten.
+  - CONF3: 24 x 4.2 mm Tungsten (ILD baseline 1). All 24 layers with 500 µm Si. 
+  <!-- - CONF4: 26 layers (ILD baseline 2, to be implemented.) -->
 
 ### Visualization
 
