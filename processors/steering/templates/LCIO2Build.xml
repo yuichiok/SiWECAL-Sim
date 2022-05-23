@@ -35,6 +35,9 @@
     <!-- Name of the Sim Calorimeter Hit output collection converted to MIP -->
     <!-- <parameter name="Output_Collections" type="string"> ecalGeV2MIP </parameter> -->
     <parameter name="Energy_Conf_Name" type="string"> output.root </parameter>
+    <parameter name="FixedPosZ" type="string">
+      6.225  21.225  36.15  51.15  66.06  81.06  96.06 111.15 126.15 141.15 156.15 171.06 186.06 201.06 216.06
+    </parameter> 
     <!-- parameter name="WriteRootfile" type="bool"> false </parameter-->
     <parameter name="WriteRootfile" type="bool"> true </parameter>
   </processor>

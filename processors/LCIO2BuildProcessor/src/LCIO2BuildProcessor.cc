@@ -12,8 +12,6 @@
 #include "IMPL/SimCalorimeterHitImpl.h"
 #include <IMPL/LCFlagImpl.h>
 #include "UTIL/LCTypedVector.h"
-// #include "UTIL/CellIDDecoder.h"
-// #include "UTIL/CellIDEncoder.h"
 #include "UTIL/BitField64.h"
 
 // ----- include for verbosity dependend logging ---------
@@ -23,7 +21,6 @@
 #include <marlin/AIDAProcessor.h>
 #include <AIDA/IHistogramFactory.h>
 #include <AIDA/ICloud1D.h>
-//#include <AIDA/IHistogram1D.h>
 #endif // MARLIN_USE_AIDA
 
 //ROOT
@@ -82,6 +79,12 @@ namespace CALICE
                                _siThicknesses,
                                siThicknessesExample);
     
+    vector<string> FixedPosZExample;
+    registerProcessorParameter("FixedPosZ",
+                               "vector of z layer positions",
+                               _FixedPosZ,
+                               FixedPosZExample);
+    
     // registerProcessorParameter("hitType",
     //                            "Hit type (SimCalorimeterHit or CalorimeterHit)",
     //                            _hitType,
@@ -97,20 +100,10 @@ namespace CALICE
 
     printParameters();
 
-    // gInterpreter->GenerateDictionary("vector<vector<float> >", "vector");
-    // gInterpreter->GenerateDictionary("vector<vector<int> >", "vector");
-
     _nRun = 0 ;
     _nEvt = 0 ;
     _rootout = new TFile(_eConfName.c_str(), "RECREATE");
     _treeout = new TTree("ecal", "From SLCIO");
-    // _treeout->Branch("nHits", &_nHits);
-    // Hit length
-    //_treeout->Branch("_nSubHits", &_nSubHits);
-    // _treeout->Branch("energy", &_energy);
-    // _treeout->Branch("positionX", &_positionX);
-    // _treeout->Branch("positionY", &_positionY);
-    // _treeout->Branch("positionZ", &_positionZ);
     _treeout->Branch("event", &event);
     _treeout->Branch("spill", &spill);
     _treeout->Branch("cycle", &cycle);
@@ -128,7 +121,6 @@ namespace CALICE
 
     // _treeout->Branch("sum_hg", &sum_hg);
     _treeout->Branch("sum_energy", &sum_energy);
-    // _treeout->Branch("sum_energy_w", &sum_energy_w);
     _treeout->Branch("sum_energy_lg", &sum_energy_lg);
 
     _treeout->Branch("hit_slab", &hit_slab);
@@ -151,16 +143,16 @@ namespace CALICE
     // _treeout->Branch("cellID0", &_cellID0);
     // _treeout->Branch("cellID1", &_cellID1);
 
-    //_treeout->Branch("_nMCParticles", &_nMCParticles);
-    // _treeout->Branch("nMCContributions", &_nMCContributions);
-    // _treeout->Branch("colType", &_colType);
+    for (int ilayer = 0; ilayer < _FixedPosZ.size(); ilayer++)
+      _FixedPosZ_float.push_back(stof(_FixedPosZ[ilayer]));
+
     // _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
     //               111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
     //               216.06};
     // ILD mode
-    _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
-                  111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
-                  216.06, 216., 231., 246., 261., 276., 291., 306., 321., 336.};
+    // _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
+    //               111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
+    //               216.06, 216., 231., 246., 261., 276., 291., 306., 321., 336.};
     _deltaZ = 2.;
     _printType = true;
   }
@@ -217,18 +209,14 @@ namespace CALICE
           id_dat = -1;
           // bcid_prev = -1;
           // bcid_next = -1;
-          nhit_chip = -1;
-          nhit_chan = -1;
+          nhit_chip = _FixedPosZ.size() * 16;
+          nhit_chan = _FixedPosZ.size() * 16 * 64;
           nhit_len = noHits;
-          // nhit_slab = 0;
 
           // sum_hg = -1;
           sum_energy_lg = 0.;
 
           sum_energy = 0.;
-          // sum_energy_w = 0.;
-          //
-          //int slab_index;
 
           for (int i = 0; i < noHits; i++)
           {
@@ -282,16 +270,12 @@ namespace CALICE
           //std::cout << "End of hit loop"<< endl;
         }//end if col
         
-        
       }//end if find col names
-      //std::cout << "Break colnames";
 
           
     }//end for loop
 
-  // std::cout << "After loop, before fill";
   _treeout->Fill();
-  //_nSubHits.clear();
   // Clear vectors
   hit_slab.clear();
   hit_chip.clear();
@@ -309,10 +293,6 @@ namespace CALICE
   hit_x.clear();
   hit_y.clear();
   hit_z.clear();
-  //_cellID0.clear();
-  // _cellID1.clear();
-  //_nMCParticles.clear();
-  // _nMCContributions.clear();
   //-- note: this will not be printed if compiled w/o MARLINDEBUG=1 !
 
   streamlog_out(DEBUG) << "   processing event: " << evt->getEventNumber()
@@ -373,6 +353,5 @@ namespace CALICE
     return;
 
   }
-
 
 }

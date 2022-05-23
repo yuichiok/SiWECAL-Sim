@@ -105,7 +105,8 @@ namespace CALICE
     std::vector<float> hit_energy, hit_energy_w, hit_energy_lg, hit_x, hit_y, hit_z;
     //std::vector<int> _cellID0, _cellID1, _nMCContributions, _colType;
     
-    std::vector<float> _FixedPosZ ;
+    std::vector<std::string> _FixedPosZ ;
+    std::vector<float> _FixedPosZ_float ;
     float _deltaZ;
     bool _printType;
     TFile* _rootout;
