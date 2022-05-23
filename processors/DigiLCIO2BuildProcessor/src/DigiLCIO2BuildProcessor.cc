@@ -103,14 +103,7 @@ namespace CALICE
     _nRun = 0 ;
     _nEvt = 0 ;
     _rootout = new TFile(_eConfName.c_str(), "RECREATE");
-    _treeout = new TTree("SLCIOConverted", "From SLCIO");
-    // _treeout->Branch("nHits", &_nHits);
-    // Hit length
-    //_treeout->Branch("_nSubHits", &_nSubHits);
-    // _treeout->Branch("energy", &_energy);
-    // _treeout->Branch("positionX", &_positionX);
-    // _treeout->Branch("positionY", &_positionY);
-    // _treeout->Branch("positionZ", &_positionZ);
+    _treeout = new TTree("ecal", "From SLCIO");
     _treeout->Branch("event", &event);
     _treeout->Branch("spill", &spill);
     _treeout->Branch("bcid", &bcid);

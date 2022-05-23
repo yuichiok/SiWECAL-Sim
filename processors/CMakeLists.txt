@@ -49,7 +49,7 @@ ADD_PROCESSOR( ./LCIO2BuildProcessor )
 ADD_PROCESSOR( ./DigiLCIO2BuildProcessor )
 ADD_PROCESSOR( ./ConversionProcessor )
 ADD_PROCESSOR( ./ShapingProcessor    )
-ADD_PROCESSOR( ./ShapedConversionProcessor )
+#ADD_PROCESSOR( ./ShapedConversionProcessor )
 
 # Build the project library.
 ADD_SHARED_LIBRARY( ${PROJECT_NAME} ${project_cxx_srcs} )

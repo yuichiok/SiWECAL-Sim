@@ -103,7 +103,7 @@ namespace CALICE
     _nRun = 0 ;
     _nEvt = 0 ;
     _rootout = new TFile(_eConfName.c_str(), "RECREATE");
-    _treeout = new TTree("SLCIOConverted", "From SLCIO");
+    _treeout = new TTree("ecal", "From SLCIO");
     // _treeout->Branch("nHits", &_nHits);
     // Hit length
     //_treeout->Branch("_nSubHits", &_nSubHits);
@@ -113,17 +113,20 @@ namespace CALICE
     // _treeout->Branch("positionZ", &_positionZ);
     _treeout->Branch("event", &event);
     _treeout->Branch("spill", &spill);
+    _treeout->Branch("cycle", &cycle);
     _treeout->Branch("bcid", &bcid);
     _treeout->Branch("bcid_first_sca_full", &bcid_first_sca_full);
     _treeout->Branch("bcid_merge_end", &bcid_merge_end);
-    _treeout->Branch("bcid_prev", &bcid_prev);
-    _treeout->Branch("bcid_next", &bcid_next);
+    _treeout->Branch("id_run", &id_run);
+    _treeout->Branch("id_dat", &id_dat);
+    // _treeout->Branch("bcid_prev", &bcid_prev);
+    // _treeout->Branch("bcid_next", &bcid_next);
     _treeout->Branch("nhit_slab", &nhit_slab);
     _treeout->Branch("nhit_chip", &nhit_chip);
     _treeout->Branch("nhit_chan", &nhit_chan);
     _treeout->Branch("nhit_len", &nhit_len);
 
-    _treeout->Branch("sum_hg", &sum_hg);
+    // _treeout->Branch("sum_hg", &sum_hg);
     _treeout->Branch("sum_energy", &sum_energy);
     // _treeout->Branch("sum_energy_w", &sum_energy_w);
     _treeout->Branch("sum_energy_lg", &sum_energy_lg);
@@ -132,8 +135,8 @@ namespace CALICE
     _treeout->Branch("hit_chip", &hit_chip);
     _treeout->Branch("hit_chan", &hit_chan);
     _treeout->Branch("hit_sca", &hit_sca);
-    _treeout->Branch("hit_hg", &hit_hg);
-    _treeout->Branch("hit_lg", &hit_lg);
+    _treeout->Branch("hit_adc_high", &hit_adc_high);
+    _treeout->Branch("hit_adc_low", &hit_adc_low);
     _treeout->Branch("hit_n_scas_filled", &hit_n_scas_filled);
     _treeout->Branch("hit_isHit", &hit_isHit);
     _treeout->Branch("hit_isMasked", &hit_isMasked);
@@ -206,18 +209,21 @@ namespace CALICE
 
           event = evtNumber;
           spill = -1;
+          cycle = -1;
           bcid = -1;
-          bcid_first_sca_full = -1;
+          bcid_first_sca_full = -999;
           bcid_merge_end = -1;
-          bcid_prev = -1;
-          bcid_next = -1;
+          id_run = -1;
+          id_dat = -1;
+          // bcid_prev = -1;
+          // bcid_next = -1;
           nhit_chip = -1;
           nhit_chan = -1;
           nhit_len = noHits;
-          nhit_slab = 0;
+          // nhit_slab = 0;
 
-          sum_hg = -1;
-          sum_energy_lg = -1;
+          // sum_hg = -1;
+          sum_energy_lg = 0.;
 
           sum_energy = 0.;
           // sum_energy_w = 0.;
@@ -233,16 +239,16 @@ namespace CALICE
             hit_chip.push_back(-1);
             hit_chan.push_back(-1);
             hit_sca.push_back(-1);
-            hit_hg.push_back(-1);
-            hit_lg.push_back(-1);
+            hit_adc_high.push_back(-1);
+            hit_adc_low.push_back(-1);
             hit_n_scas_filled.push_back(-1);
-            hit_isHit.push_back(-1);
-            hit_isMasked.push_back(-1);
-            hit_isCommissioned.push_back(-1);
+            hit_isHit.push_back(1);
+            hit_isMasked.push_back(0);
+            hit_isCommissioned.push_back(1);
 
             hit_energy.push_back(aHit->getEnergy());
             sum_energy += aHit->getEnergy();
-            hit_energy_lg.push_back(-1.);
+            hit_energy_lg.push_back(aHit->getEnergy());
             hit_x.push_back(aHit->getPosition()[0]);
             hit_y.push_back(aHit->getPosition()[1]);
             hit_z.push_back(aHit->getPosition()[2]);
@@ -261,6 +267,8 @@ namespace CALICE
             // if (slab_index != _FixedPosZ.end()) hit_slab.push_back(std::distance(_FixedPosZ.begin(), slab_index));
             
           }//end loop over SimCalorimeterHits
+
+          sum_energy_lg = sum_energy;
           
           std::vector<float> slabs_hit;
           slabs_hit = hit_z;
@@ -289,8 +297,8 @@ namespace CALICE
   hit_chip.clear();
   hit_chan.clear();
   hit_sca.clear();
-  hit_hg.clear();
-  hit_lg.clear();
+  hit_adc_high.clear();
+  hit_adc_low.clear();
   hit_n_scas_filled.clear();
   hit_isHit.clear();
   hit_isMasked.clear();
