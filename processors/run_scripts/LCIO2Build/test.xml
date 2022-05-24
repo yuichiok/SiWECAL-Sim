@@ -5,35 +5,17 @@
 	</execute>
 	<global>
 		<parameter name="LCIOInputFiles">
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_1.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_10.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_11.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_12.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_13.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_14.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_15.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_16.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_17.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_18.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_19.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_2.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_20.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_3.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_4.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_5.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_6.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_7.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_8.slcio
-		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF3/lcio/ECAL_QGSP_BERT_conf3_e-_1GeV_9.slcio
+		/data_ilc/flc/jimenez/simulations/TB2022-06/CONF1/lcio/ECAL_QGSP_BERT_conf1_e-_3.0GeV_1.slcio
 		</parameter>
-		<parameter name="MaxRecordNumber" value="100"></parameter>
+		<parameter name="MaxRecordNumber" value="5"></parameter>
 		<parameter name="SkipNEvents" value="0"></parameter>
 		<parameter name="SupressCheck" value="false"></parameter>
 		<parameter name="Verbosity" options="DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT">DEBUG</parameter>
 	</global>
 	<processor name="LCIO2BuildConversion" type="LCIO2BuildProcessor">
 		<parameter name="Input_Collections" type="string">SiEcalCollection</parameter>
-		<parameter name="Energy_Conf_Name" type="string">balrrrbla.root</parameter>
+		<parameter name="Energy_Conf_Name" type="string">blabla.root</parameter>
+		<parameter name="FixedPosZ" type="string">6.225  21.225  36.15  51.15  66.06  81.06  96.06 111.15 126.15 141.15 156.15 171.06 186.06 201.06 216.06</parameter>
 		<parameter name="WriteRootfile" type="bool">true</parameter>
 	</processor>
 </marlin>

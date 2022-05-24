@@ -241,12 +241,13 @@ namespace CALICE
             hit_y.push_back(aHit->getPosition()[1]);
             hit_z.push_back(aHit->getPosition()[2]);
 
-            
+           cout <<  aHit->getPosition()[2] << endl;
             // Need _deltaZ tolerance to find layer
             for (int i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
               if (_FixedPosZ[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
                   _FixedPosZ[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
                 hit_slab.push_back(i_slab);
+                cout << "This layer: " << i_slab << endl;
               }
             }
 

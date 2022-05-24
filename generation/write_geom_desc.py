@@ -63,10 +63,10 @@ def writeCommonStuff(config):
     print('<vis name="InVis"     alpha="1.0"  r="0.0" g="1.0"  b="0.0" showDaughters="true"  visible="false"/>')
     print('</display>')
     print('<define>')
-    print('<include ref="ECAL_commondefs.xml"/>')
+    print('<include ref="../ECAL_commondefs.xml"/>')
     print('</define>')
     print('<display>')
-    print('<include ref="ECAL_commondisp.xml"/>')
+    print('<include ref="../ECAL_commondisp.xml"/>')
     print('</display>')
     print('<readouts>')
     print('<readout name="SiEcalCollection">')
@@ -95,21 +95,21 @@ def write_geom_xml(layerconfig):
     if len(layerconfig)<1:
         print('empty layer config')
         return
-    # TODO: Put here the plastic PLATE!!!
     print('<slice material = "PolyethyleneProto"    thickness = "Ecal_PlasticThickness"   vis="PlasticVis"/>')
     # TB2021: 29.7 (distance from plastic to first rail) + 30 (first two rails empty) 
     # A Gallas: add 2.1 of air but I don't agree, as first (W/Air) box below adds 4.2 Air. 
     print('<slice material = "Air"         thickness = "59.7*mm"   vis="Invisible"/>')
     # TODO: Line above should be handled with slab boolean in layer (using first two empty layers)
+
     # the layers of the prototype
     for layer in layerconfig:
         nAbs=layer[0]
         slab=layer[1]
         Si_z=layer[2]
-        if nAbs<0 or nAbs>6:
+        if nAbs<0 or nAbs>8:
             print('crazy number of W plates!', nAbs)
             exit
-        nAir=6-nAbs
+        nAir=8-nAbs
         print('<layer repeat="1" vis="EcalVis">')
         if nAir>0:
             print('<slice material = "Air" thickness = "'+str(nAir)+'*Ecal_WThickness"  vis="AirVis" />')
@@ -122,11 +122,12 @@ def write_geom_xml(layerconfig):
             print('<slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>')
             print('<slice material = "Si"          thickness = "Ecal_WaferThickness'+str(Si_z)+'"     vis="SiVis" sensitive = "yes" />')
             print('<slice material = "Air"         thickness = "Ecal_GlueThickness_pcb"  vis="AirVis"/>')
-            # Below: Copper layer (not kapton? but same thicknes but same thicknesss)
+            # Below: Copper layer (not kapton? but same thickness)
             print('<slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />')
             print('<slice material = "PCB"         thickness = "Ecal_PcbThickness"       vis="PCBVis" />')
             print('<slice material = "Air"         thickness = "Ecal_ChipThickness"       vis="AirVis" />')
             print('<slice material = "Air"         thickness = "Ecal_w_slab_gap'+str(Si_z)+'"        vis="AirVis"/>')
+        # TODO: double check below
         else:
             print('<slice material = "Air" thickness = "Ecal_LayerDistance-2*Ecal_WThickness" vis="AirVis"/>')
 
