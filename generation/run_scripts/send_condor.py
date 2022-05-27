@@ -119,7 +119,7 @@ class Batch:
                 f.write("SIM.physicsList = \"{}\"\n".format(self.physics_list))
                 f.write("SIM.enableDetailedShowerMode=True")
             print("Python script written in", pyscript)
-            break
+            # break
     
     def write_shcondors(self):
         #for it in range(1, 21):

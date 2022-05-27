@@ -107,9 +107,12 @@ namespace CALICE
     //std::vector<int> _cellID0, _cellID1, _nMCContributions, _colType;
     
     std::vector<std::string> _FixedPosZ ;
+    std::vector<std::string> _GeV2MIP ;
     std::vector<float> _FixedPosZ_float ;
+    std::vector<float> _GeV2MIP_float ;
     float _deltaZ;
     bool _printType;
+    bool _ConversionGeV2MIP;
     TFile* _rootout;
     TTree* _treeout;
 

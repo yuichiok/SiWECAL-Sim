@@ -113,8 +113,6 @@ namespace CALICE
     _treeout->Branch("bcid", &bcid);
     _treeout->Branch("bcid_first_sca_full", &bcid_first_sca_full);
     _treeout->Branch("bcid_merge_end", &bcid_merge_end);
-    // _treeout->Branch("bcid_prev", &bcid_prev);
-    // _treeout->Branch("bcid_next", &bcid_next);
     _treeout->Branch("id_run", &id_run);
     _treeout->Branch("id_dat", &id_dat);
     _treeout->Branch("nhit_slab", &nhit_slab);
@@ -198,8 +196,6 @@ namespace CALICE
           bcid = -1;
           bcid_first_sca_full = -999;
           bcid_merge_end = -1;
-          // bcid_prev = -1;
-          // bcid_next = -1;
           id_run = -1;
           id_dat = -1;
           nhit_chip = _FixedPosZ.size() * 16;
@@ -224,7 +220,7 @@ namespace CALICE
             hit_sca.push_back(1);
             hit_adc_high.push_back(-1);
             hit_adc_low.push_back(-1);
-            hit_n_scas_filled.push_back(-1);
+            hit_n_scas_filled.push_back(1);
             hit_isHit.push_back(1);
             hit_isMasked.push_back(0);
             hit_isCommissioned.push_back(1);

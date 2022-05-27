@@ -46,10 +46,10 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <vis name="InVis"     alpha="1.0"  r="0.0" g="1.0"  b="0.0" showDaughters="true"  visible="false"/>
 </display>
 <define>
-<include ref="ECAL_commondefs.xml"/>
+<include ref="../ECAL_commondefs.xml"/>
 </define>
 <display>
-<include ref="ECAL_commondisp.xml"/>
+<include ref="../ECAL_commondisp.xml"/>
 </display>
 <readouts>
 <readout name="SiEcalCollection">
@@ -59,17 +59,18 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 </readouts>
 <detectors>
 <detector name="EcalTestBeam" type="CaloPrototype_v02" vis="EcalVis" id="3" readout="SiEcalCollection" insideTrackingVolume="false">
-<dimensions x="Ecal_dim_x" y="Ecal_dim_y" z="EcalILD_dim_z"/>
+<dimensions x="Ecal_dim_x" y="Ecal_dim_y" z="Ecal_dim_z"/>
 <common_parameters frontFaceZ="Ecal_FrontFaceZ" nCellsX="Ecal_NcellsX" nCellsY="Ecal_NcellsY" cellSizeX="Ecal_CellSizeX" cellSizeY="Ecal_CellSizeY"/> 
 <type_flags type="1" />
 <envelope vis="EcalVis">
-<shape type="Box" dx="Ecal_dim_x/2.0 + env_safety" dy="Ecal_dim_y/2.0 + env_safety"  dz="EcalILD_dim_z/2.0 + env_safety" material="Air" />
+<shape type="Box" dx="Ecal_dim_x/2.0 + env_safety" dy="Ecal_dim_y/2.0 + env_safety"  dz="Ecal_dim_z/2.0 + env_safety" material="Air" />
 <rotation x="0" y="0" z="0"/>
-<position x="0" y="0" z="EcalILD_dim_z/2.0"/>
+<position x="0" y="0" z="Ecal_dim_z/2.0"/>
 </envelope>
 <slice material = "PolyethyleneProto"    thickness = "Ecal_PlasticThickness"   vis="PlasticVis"/>
 <slice material = "Air"         thickness = "59.7*mm"   vis="Invisible"/>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -82,6 +83,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -94,6 +96,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -106,6 +109,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -118,6 +122,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -130,6 +135,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -142,6 +148,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -154,6 +161,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -166,6 +174,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -178,6 +187,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -190,6 +200,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -202,6 +213,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -214,6 +226,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -226,6 +239,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -238,6 +252,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -250,6 +265,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -262,6 +278,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -274,6 +291,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -286,6 +304,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -298,6 +317,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -310,6 +330,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -322,6 +343,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -334,6 +356,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
@@ -346,6 +369,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
+<slice material = "Air" thickness = "2*Ecal_WThickness"  vis="AirVis" />
 <slice material = "TungstenDens1910" thickness = "6*Ecal_WThickness"  vis="TungstenVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />

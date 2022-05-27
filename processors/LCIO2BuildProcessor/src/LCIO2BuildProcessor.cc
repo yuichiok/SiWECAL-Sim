@@ -84,6 +84,18 @@ namespace CALICE
                                "vector of z layer positions",
                                _FixedPosZ,
                                FixedPosZExample);
+
+    vector<string> GeV2MIPExample;
+    registerProcessorParameter("GeV2MIP",
+                               "vector of conversion factors",
+                               _GeV2MIP,
+                               GeV2MIPExample);
+
+    bool ConversionGeV2MIPExample;
+    registerProcessorParameter("ConversionGeV2MIP",
+                               "Do conversion to MIP",
+                               _ConversionGeV2MIP,
+                               ConversionGeV2MIPExample);
     
     // registerProcessorParameter("hitType",
     //                            "Hit type (SimCalorimeterHit or CalorimeterHit)",
@@ -112,8 +124,6 @@ namespace CALICE
     _treeout->Branch("bcid_merge_end", &bcid_merge_end);
     _treeout->Branch("id_run", &id_run);
     _treeout->Branch("id_dat", &id_dat);
-    // _treeout->Branch("bcid_prev", &bcid_prev);
-    // _treeout->Branch("bcid_next", &bcid_next);
     _treeout->Branch("nhit_slab", &nhit_slab);
     _treeout->Branch("nhit_chip", &nhit_chip);
     _treeout->Branch("nhit_chan", &nhit_chan);
@@ -145,6 +155,9 @@ namespace CALICE
 
     for (int ilayer = 0; ilayer < _FixedPosZ.size(); ilayer++)
       _FixedPosZ_float.push_back(stof(_FixedPosZ[ilayer]));
+
+    for (int ilayer = 0; ilayer < _GeV2MIP.size(); ilayer++)
+      _GeV2MIP_float.push_back(stof(_GeV2MIP[ilayer]));
 
     // _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
     //               111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
@@ -207,8 +220,6 @@ namespace CALICE
           bcid_merge_end = -1;
           id_run = -1;
           id_dat = -1;
-          // bcid_prev = -1;
-          // bcid_next = -1;
           nhit_chip = _FixedPosZ.size() * 16;
           nhit_chan = _FixedPosZ.size() * 16 * 64;
           nhit_len = noHits;
@@ -217,9 +228,10 @@ namespace CALICE
           sum_energy_lg = 0.;
 
           sum_energy = 0.;
-
+          int i_slab;
           for (int i = 0; i < noHits; i++)
           {
+            // bool found_slab = false;
             SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
             //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
             // hitCast(*aHit);
@@ -229,13 +241,27 @@ namespace CALICE
             hit_sca.push_back(-1);
             hit_adc_high.push_back(-1);
             hit_adc_low.push_back(-1);
-            hit_n_scas_filled.push_back(-1);
+            hit_n_scas_filled.push_back(1);
             hit_isHit.push_back(1);
             hit_isMasked.push_back(0);
             hit_isCommissioned.push_back(1);
 
-            hit_energy.push_back(aHit->getEnergy());
-            sum_energy += aHit->getEnergy();
+            for (i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
+              if (_FixedPosZ_float[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
+                  _FixedPosZ_float[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
+                hit_slab.push_back(i_slab);
+                break;
+              }
+            }
+
+            if (_ConversionGeV2MIP) {
+              hit_energy.push_back(aHit->getEnergy() / _GeV2MIP_float[i_slab]);
+              sum_energy += aHit->getEnergy() / _GeV2MIP_float[i_slab];
+            }
+            else {
+              hit_energy.push_back(aHit->getEnergy());
+              sum_energy += aHit->getEnergy();
+            }
             hit_energy_lg.push_back(aHit->getEnergy());
             hit_x.push_back(aHit->getPosition()[0]);
             hit_y.push_back(aHit->getPosition()[1]);
@@ -251,15 +277,6 @@ namespace CALICE
             // Need _deltaZ tolerance to find layer
             
             
-            
-            // cout << "Hit: " << aHit->getPosition()[2] << ". ";
-            for (int i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
-              if (_FixedPosZ_float[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
-                  _FixedPosZ_float[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
-                hit_slab.push_back(i_slab);
-                // cout << "This layer: " << i_slab << endl;
-              }
-            }
 
             // Shorter implementation if perfect equality between hit_z and _FixedPosZ
             // auto slab_index = std::find(_FixedPosZ.begin(), _FixedPosZ.end(), aHit->getPosition()[2]);
@@ -353,7 +370,6 @@ namespace CALICE
   /************************************************************************************/
   void LCIO2BuildProcessor::printParameters(){
     std::cerr << "============= LCIO2Build Processor =================" <<std::endl;
-    //std::cerr << "Converting Simulation Hits from GeV to MIP" <<std::endl;
     std::cerr << "Converting Simulation Hits to build ROOT file " <<std::endl;
     std::cerr << "Input Collection name : "; for(unsigned int i = 0; i < _calorimInpCollections.size(); i++) std::cerr << _calorimInpCollections.at(i) << " ";
     std::cerr << std::endl;
