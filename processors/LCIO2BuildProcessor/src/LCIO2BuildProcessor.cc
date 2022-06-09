@@ -85,6 +85,12 @@ namespace CALICE
                                _FixedPosZ,
                                FixedPosZExample);
 
+    float Z0Example = 7.26; // For TB2022-03_CONF2
+    registerProcessorParameter("Z0",
+                               "Position of first slab",
+                               _Z0,
+                               Z0Example);
+
     vector<string> GeV2MIPExample;
     registerProcessorParameter("GeV2MIP",
                                "vector of conversion factors",
@@ -166,6 +172,7 @@ namespace CALICE
     // _FixedPosZ = {6.225,  21.225,  36.15,  51.15,  66.06,  81.06,  96.06,\
     //               111.15, 126.15, 141.15, 156.15, 171.06, 186.06, 201.06,\
     //               216.06, 216., 231., 246., 261., 276., 291., 306., 321., 336.};
+    _slabSpacing = 15.;
     _deltaZ = 2.;
     _printType = true;
   }
@@ -246,13 +253,18 @@ namespace CALICE
             hit_isMasked.push_back(0);
             hit_isCommissioned.push_back(1);
 
-            for (i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
-              if (_FixedPosZ_float[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
-                  _FixedPosZ_float[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
-                hit_slab.push_back(i_slab);
-                break;
-              }
-            }
+            // for (i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
+            //   if (_FixedPosZ_float[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
+            //       _FixedPosZ_float[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
+            //     hit_slab.push_back(i_slab);
+            //     break;
+            //   }
+            // }
+            // Second implementation
+            i_slab = (int)((aHit->getPosition()[2] - _Z0) / _slabSpacing);
+            // cout << aHit->getPosition()[2] << " " << i_slab << endl;
+            
+            hit_slab.push_back(i_slab);
 
             if (_ConversionGeV2MIP) {
               hit_energy.push_back(aHit->getEnergy() / _GeV2MIP_float[i_slab]);
@@ -274,7 +286,6 @@ namespace CALICE
             // input in the steering, which is not convenient because
             // per conf/geometry, z points can be different...
             // ** End Note ** //
-            // Need _deltaZ tolerance to find layer
             
             
 

@@ -108,7 +108,8 @@ namespace CALICE
     
     std::vector<std::string> _FixedPosZ ;
     std::vector<std::string> _GeV2MIP ;
-    std::vector<float> _FixedPosZ_float ;
+    float _Z0, _slabSpacing;
+    std::vector<float> _FixedPosZ_float;
     std::vector<float> _GeV2MIP_float ;
     float _deltaZ;
     bool _printType;

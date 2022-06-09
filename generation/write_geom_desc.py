@@ -34,7 +34,7 @@ def writeCommonStuff(config):
     print('<includes>')
     print('<gdmlFile  ref="${DD4hepINSTALL}/DDDetectors/compact/elements.xml"/>')
     print('<gdmlFile  ref="${DD4hepINSTALL}/DDDetectors/compact/materials.xml"/>')
-    print('<gdmlFile  ref="./extra_materials.xml"/>')
+    print('<gdmlFile  ref="../extra_materials.xml"/>')
     print('</includes>')
     print('<plugins>')
     print('<plugin name="InstallSurfaceManager"/>')
@@ -90,12 +90,15 @@ def writeCommonStuff(config):
 
 
 #give a layerconfig, write the xml file for dd4hep
-def write_geom_xml(layerconfig):
+def write_geom_xml(layerconfig, conf):
     # check input is reasonable
     if len(layerconfig)<1:
         print('empty layer config')
         return
-    print('<slice material = "PolyethyleneProto"    thickness = "Ecal_PlasticThickness"   vis="PlasticVis"/>')
+    if "TB2021" in conf:
+        print('<slice material = "PolyethyleneProto"    thickness = "Ecal_PlasticThickness"   vis="PlasticVis"/>')
+    else:
+        print('<slice material = "Al"      thickness = "Ecal_AlThickness"   vis="AlVis"/>')
     # TB2021: 29.7 (distance from plastic to first rail) + 30 (first two rails empty) 
     # A Gallas: add 2.1 of air but I don't agree, as first (W/Air) box below adds 4.2 Air. 
     print('<slice material = "Air"         thickness = "59.7*mm"   vis="Invisible"/>')
@@ -158,7 +161,7 @@ if len(sys.argv)==2:
     #iconfig=int(sys.argv[1])
     lconf=defineLayerConfig(sys.argv[1])
     writeCommonStuff(sys.argv[1])
-    write_geom_xml(lconf)
+    write_geom_xml(lconf, sys.argv[1])
 else:
     print('need to give single argument')
     print('write_geom_desc.py confName')

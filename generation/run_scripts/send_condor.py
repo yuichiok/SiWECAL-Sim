@@ -9,9 +9,11 @@ import numpy as np
 parser = argparse.ArgumentParser(description="Send jobs to Condor queue.")
 parser.add_argument('--particle', default="e-", help="Particle name, default \"e-\"")
 parser.add_argument('--energy', default="3.0", type=str, help="Beam particle energy in GeV (default 3.0).")
+parser.add_argument('--beam_x', default="0", type=str, help="Beam x position (deafult 0)")
+parser.add_argument('--beam_y', default="0", type=str, help="Beam y position (deafult 0)")
 parser.add_argument('--angle', default=0, help="Incidence angle of beam (testing this feature).")
-parser.add_argument('--nevents', default=100, help="Number of events (default 100).")
-parser.add_argument('--events_per_job', default=5000, help="Max number of events per batch job (default 5000).")
+parser.add_argument('--nevents', default=100, type=int, help="Number of events (default 100).")
+parser.add_argument('--events_per_job', default=5000, type=int, help="Max number of events per batch job (default 5000).")
 parser.add_argument('--tbconf', default='TB2022-03_CONF0', help="TB+Conf as defined in confs.py (default TB2022-03_CONF0).")
 parser.add_argument('--test_run', action="store_true", default=False, help="Send test run to condor.")
 parser.add_argument('--run_locally', action="store_true", help="Run locally and not in Condor.")
@@ -25,6 +27,8 @@ class Batch:
     def __init__(self,
                  particle,
                  energy,
+                 beam_x,
+                 beam_y,
                  angle,
                  total_n_events,
                  events_per_job,
@@ -37,6 +41,8 @@ class Batch:
 
         self.particle = particle
         self.energy = energy
+        self.beam_x = beam_x
+        self.beam_y = beam_y
         self.angle = angle
         self.total_n_events = total_n_events 
         self.events_per_job = events_per_job 
@@ -53,10 +59,12 @@ class Batch:
         self.ilcsoft_path = ilcsoft_path
         self.submit_command = submit_command
         self.jobs_events = np.full(int(total_n_events / events_per_job)+1, events_per_job)
-        # print(self.jobs_events)
         if (total_n_events % events_per_job != 0):
-            self.jobs_events[-1] = events_per_job * ((total_n_events / events_per_job) % 1)
-        print("Launching", len(self.jobs_events), "jobs.")
+            # rounding issue here can give 1 less event but...
+            self.jobs_events[-1] = int(events_per_job * ((total_n_events / events_per_job) % 1))
+        else:
+            self.jobs_events = np.delete(self.jobs_events, -1)
+        print("Launching", len(self.jobs_events), "jobs.\n", self.jobs_events)
 
     def mkdirs(self):
         pass
@@ -70,7 +78,7 @@ class Batch:
                 f.write("/gps/direction 0 0 1\n")
                 f.write("/gps/pos/type Beam\n")
                 f.write("/gps/pos/shape Circle\n")
-                f.write("/gps/pos/centre -20 -45 0 mm\n")
+                f.write("/gps/pos/centre {} {} 0 mm\n".format(self.beam_x, self.beam_y))
                 f.write("/gps/pos/sigma_x 7 mm\n")
                 f.write("/gps/pos/sigma_y 7 mm\n")
                 # Angle should be added here
@@ -170,6 +178,8 @@ if __name__ == "__main__":
     
     batch = Batch(particle = args.particle,
                   energy = args.energy,
+                  beam_x = args.beam_x,
+                  beam_y = args.beam_y,
                   angle = 0,
                   total_n_events = args.nevents,
                   events_per_job = args.events_per_job,
