@@ -16,7 +16,7 @@
         /data_ilc/flc/jimenez/simulations/TB2022-06/CONF2/lcio/ECAL_QGSP_BERT_conf2_pi+_10GeV_9.slcio
         /data_ilc/flc/jimenez/simulations/TB2022-06/CONF2/lcio/ECAL_QGSP_BERT_conf2_pi+_10GeV_10.slcio
 		</parameter>
-		<parameter name="MaxRecordNumber" value="5000"></parameter>
+		<parameter name="MaxRecordNumber" value="1000"></parameter>
 		<parameter name="SkipNEvents" value="0"></parameter>
 		<parameter name="SupressCheck" value="false"></parameter>
 		<parameter name="Verbosity" options="DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT">DEBUG</parameter>

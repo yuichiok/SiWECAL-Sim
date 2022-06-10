@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 #include <map>
 
 // ---- LCIO Headers
@@ -103,6 +104,25 @@ namespace CALICE
                                _ConversionGeV2MIP,
                                ConversionGeV2MIPExample);
     
+    vector<string> MapFilenamesExample = {"/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/processors/LCIO2BuildProcessor/mapping/fev10_chip_channel_x_y_mapping.txt", "/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/processors/LCIO2BuildProcessor/mapping/fev11_cob_rotate_chip_channel_x_y_mapping.txt"};
+    registerProcessorParameter("MappingFiles",
+                               "Files mapping hit position with cell chan and chip",
+                               _MapFilenames,
+                               MapFilenamesExample);
+    
+    vector<int> SlabMapIndicesExample = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1};
+    registerProcessorParameter("SlabMapIndices",
+                               "vector indices of maps (from MappingFiles parameters) to be used per slab",
+                               _SlabMapIndices,
+                               SlabMapIndicesExample);    
+
+
+    float HalfCenterGapExample = 1.05; // This dead space should be included in the generation (3.8 - 5.5/2)
+    registerProcessorParameter("HalfCenterGap",
+                               "Half size of gap between wafers",
+                               _HalfCenterGap,
+                               HalfCenterGapExample);
+    
     // registerProcessorParameter("hitType",
     //                            "Hit type (SimCalorimeterHit or CalorimeterHit)",
     //                            _hitType,
@@ -175,6 +195,44 @@ namespace CALICE
     _slabSpacing = 15.;
     _deltaZ = 2.;
     _printType = true;
+
+    // Mapping (should be done with nice dict...)
+    // vector<vector<vector<float>>> _maps(_MapFilenames.size(), vector<vector<float>>(1024, vector<float>(2)));
+    // Initializing to zeros, needs to be done in a smarter way
+    vector<float> zeros = {0., 0.};
+    vector<vector<float>> this_map;
+    for (int imap = 0; imap < _MapFilenames.size(); imap++) {
+      for (int icell = 0; icell < 1024; icell++) this_map.push_back(zeros);
+      _maps.push_back(this_map); 
+    }
+    fstream map_file;
+    string space_delimiter = " ";
+    size_t pos;
+    vector<string> words;
+
+    for (int imap = 0; imap < _MapFilenames.size(); imap++) {
+      map_file.open(_MapFilenames[imap], ios::in);
+      vector<vector<float>> this_map;
+      if (map_file.is_open()){   
+        string line;
+        getline(map_file, line); //skip the first line
+        int iline = 0;
+        while(getline(map_file, line)){ 
+          auto start = 0U;
+          auto end = line.find(space_delimiter);
+          while (end != std::string::npos) {
+              words.push_back(line.substr(start, end - start));
+              start = end + space_delimiter.length();
+              end = line.find(space_delimiter, start);
+          }
+          words.push_back(line.substr(start));
+          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][0] = stof(words[4]);
+          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][1] = stof(words[5]);
+          words.clear();
+        }
+        map_file.close();
+      }
+    }
   }
 
 
@@ -236,15 +294,17 @@ namespace CALICE
 
           sum_energy = 0.;
           int i_slab;
+          float gap_hit_x, gap_hit_y;
           for (int i = 0; i < noHits; i++)
           {
+            // if(i == 3) {cout << "Breaking at 3 hits!!!"; break;}
             // bool found_slab = false;
             SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
             //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
             // hitCast(*aHit);
 
-            hit_chip.push_back(-1);
-            hit_chan.push_back(-1);
+            // hit_chip.push_back(-1);
+            // hit_chan.push_back(-1);
             hit_sca.push_back(-1);
             hit_adc_high.push_back(-1);
             hit_adc_low.push_back(-1);
@@ -266,6 +326,8 @@ namespace CALICE
             
             hit_slab.push_back(i_slab);
 
+           
+
             if (_ConversionGeV2MIP) {
               hit_energy.push_back(aHit->getEnergy() / _GeV2MIP_float[i_slab]);
               sum_energy += aHit->getEnergy() / _GeV2MIP_float[i_slab];
@@ -278,6 +340,29 @@ namespace CALICE
             hit_x.push_back(aHit->getPosition()[0]);
             hit_y.push_back(aHit->getPosition()[1]);
             hit_z.push_back(aHit->getPosition()[2]);
+    
+            // hit_chip hit_chan
+            if (aHit->getPosition()[0] > 0) gap_hit_x = aHit->getPosition()[0] + _HalfCenterGap;
+            else gap_hit_x = aHit->getPosition()[0] - _HalfCenterGap;
+            if (aHit->getPosition()[1] > 0) gap_hit_y = aHit->getPosition()[1] + _HalfCenterGap;
+            else gap_hit_y = aHit->getPosition()[1] - _HalfCenterGap;
+
+            // bool found_chan = false;
+            // cout << "True hit position: " << aHit->getPosition()[0] << ", " << aHit->getPosition()[1] << endl;
+
+            for (int icell = 0; icell < 1024; icell++) {
+              
+              float in_x = fabs(_maps[_SlabMapIndices[i_slab]][icell][0] - gap_hit_x);
+              float in_y = fabs(_maps[_SlabMapIndices[i_slab]][icell][1] - gap_hit_y);
+              if (in_x < 0.1 && in_y < 0.1) {
+                hit_chip.push_back(icell/64);
+                hit_chan.push_back(icell%64);
+                // found_chan = true;
+                // cout << "Found in chip " << icell/64 << " and chan " << icell%64 << endl;
+                // cout << "Cell center = " << _maps[_SlabMapIndices[i_slab]][icell][0] << ", " << _maps[_SlabMapIndices[i_slab]][icell][1] << endl;
+              }
+            }
+            // if (!found_chan) cout << "No channel found for hit!!" << endl;
 
             // cout <<  aHit->getPosition()[2] << endl;
             // ** Note ** //

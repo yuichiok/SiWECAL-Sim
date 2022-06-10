@@ -108,9 +108,13 @@ namespace CALICE
     
     std::vector<std::string> _FixedPosZ ;
     std::vector<std::string> _GeV2MIP ;
-    float _Z0, _slabSpacing;
+    std::vector<std::string> _MapFilenames;
+    float _Z0, _slabSpacing, _HalfCenterGap;
+    std::vector<int> _SlabMapIndices;
     std::vector<float> _FixedPosZ_float;
     std::vector<float> _GeV2MIP_float ;
+    std::vector<std::vector<std::vector<float>>> _maps;
+    // std::vector<std::vector<std::vector<float>>> _maps(_MapFilenames.size(), std::vector<std::vector<float>>(1024, std::vector<float>(2)));
     float _deltaZ;
     bool _printType;
     bool _ConversionGeV2MIP;
