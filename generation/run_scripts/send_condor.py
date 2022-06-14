@@ -65,6 +65,10 @@ class Batch:
         else:
             self.jobs_events = np.delete(self.jobs_events, -1)
         print("Launching", len(self.jobs_events), "jobs.\n", self.jobs_events)
+        # TODO: 
+        #- Include mkdir CONF{N}/{build,lcio}
+        # init counter of batch jobs
+
 
     def mkdirs(self):
         pass

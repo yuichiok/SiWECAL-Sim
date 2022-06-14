@@ -285,26 +285,23 @@ namespace CALICE
           bcid_merge_end = -1;
           id_run = -1;
           id_dat = -1;
-          nhit_chip = _FixedPosZ.size() * 16;
-          nhit_chan = _FixedPosZ.size() * 16 * 64;
           nhit_len = noHits;
 
-          // sum_hg = -1;
           sum_energy_lg = 0.;
-
           sum_energy = 0.;
+
+          vector<float> slabs_hit;
+          vector<int> chans_hit, chips_hit;
           int i_slab;
           float gap_hit_x, gap_hit_y;
+
+          // Hits loop
           for (int i = 0; i < noHits; i++)
           {
-            // if(i == 3) {cout << "Breaking at 3 hits!!!"; break;}
-            // bool found_slab = false;
             SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
             //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
             // hitCast(*aHit);
 
-            // hit_chip.push_back(-1);
-            // hit_chan.push_back(-1);
             hit_sca.push_back(-1);
             hit_adc_high.push_back(-1);
             hit_adc_low.push_back(-1);
@@ -326,8 +323,6 @@ namespace CALICE
             
             hit_slab.push_back(i_slab);
 
-           
-
             if (_ConversionGeV2MIP) {
               hit_energy.push_back(aHit->getEnergy() / _GeV2MIP_float[i_slab]);
               sum_energy += aHit->getEnergy() / _GeV2MIP_float[i_slab];
@@ -347,24 +342,14 @@ namespace CALICE
             if (aHit->getPosition()[1] > 0) gap_hit_y = aHit->getPosition()[1] + _HalfCenterGap;
             else gap_hit_y = aHit->getPosition()[1] - _HalfCenterGap;
 
-            // bool found_chan = false;
-            // cout << "True hit position: " << aHit->getPosition()[0] << ", " << aHit->getPosition()[1] << endl;
-
             for (int icell = 0; icell < 1024; icell++) {
-              
               float in_x = fabs(_maps[_SlabMapIndices[i_slab]][icell][0] - gap_hit_x);
               float in_y = fabs(_maps[_SlabMapIndices[i_slab]][icell][1] - gap_hit_y);
               if (in_x < 0.1 && in_y < 0.1) {
                 hit_chip.push_back(icell/64);
                 hit_chan.push_back(icell%64);
-                // found_chan = true;
-                // cout << "Found in chip " << icell/64 << " and chan " << icell%64 << endl;
-                // cout << "Cell center = " << _maps[_SlabMapIndices[i_slab]][icell][0] << ", " << _maps[_SlabMapIndices[i_slab]][icell][1] << endl;
               }
             }
-            // if (!found_chan) cout << "No channel found for hit!!" << endl;
-
-            // cout <<  aHit->getPosition()[2] << endl;
             // ** Note ** //
             // I didn't find a straightforward way to fill hit_slab,
             // without providing the list of z layer pos (_FixedPosZ) as
@@ -372,8 +357,6 @@ namespace CALICE
             // per conf/geometry, z points can be different...
             // ** End Note ** //
             
-            
-
             // Shorter implementation if perfect equality between hit_z and _FixedPosZ
             // auto slab_index = std::find(_FixedPosZ.begin(), _FixedPosZ.end(), aHit->getPosition()[2]);
             // if (slab_index != _FixedPosZ.end()) hit_slab.push_back(std::distance(_FixedPosZ.begin(), slab_index));
@@ -382,18 +365,30 @@ namespace CALICE
 
           sum_energy_lg = sum_energy;
           
-          std::vector<float> slabs_hit;
+          vector<float>::iterator it1;
+          // nhit_slab
           slabs_hit = hit_z;
-          
-          std::sort(slabs_hit.begin(), slabs_hit.end());
-          
-          std::vector<float>::iterator it;
-          it = std::unique(slabs_hit.begin(), slabs_hit.end());
-          slabs_hit.resize(std::distance(slabs_hit.begin(),it));
+          sort(slabs_hit.begin(), slabs_hit.end());
+          it1 = unique(slabs_hit.begin(), slabs_hit.end());
+          slabs_hit.resize(std::distance(slabs_hit.begin(), it1));
           nhit_slab = slabs_hit.size();
-          //std::cout << "End of hit loop"<< endl;
-        }//end if col
+          
+          // nhit_chan
+          vector<int>::iterator it2;
+          chans_hit = hit_chan;
+          sort(chans_hit.begin(), chans_hit.end());
+          it2 = unique(chans_hit.begin(), chans_hit.end());
+          chans_hit.resize(std::distance(chans_hit.begin(), it2));
+          nhit_chan = chans_hit.size();
+          // nhit_chip
+          vector<int>::iterator it3;
+          chips_hit = hit_chip;
+          sort(chips_hit.begin(), chips_hit.end());
+          it3 = unique(chips_hit.begin(), chips_hit.end());
+          chips_hit.resize(distance(chips_hit.begin(), it3));
+          nhit_chip = chips_hit.size();
         
+        }//end if col
       }//end if find col names
 
           
