@@ -64,6 +64,7 @@
 generation/run_scripts/TB20*/steer
 generation/run_scripts/TB20*/log
 generation/run_scripts/TB20*/data
+generation/__pycache__
 generation/plotting/*
 generation/benchmark
 
