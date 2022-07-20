@@ -28,8 +28,8 @@ data_path="${local}/data/"
 #macfile=$4
 macfile=grid_-40-40_${particle}_${energy}GeV.mac
 
-# nevt=5000
-nevt=10
+nevt=5000
+# nevt=10
 
 cat > ${local}/macros/$macfile <<EOF
 
@@ -105,7 +105,7 @@ ddsim --enableG4GPS --macroFile ${local}/macros/${macfile} --steeringFile ${loca
 EOF
     
     cd ${local}/steer/
-    bsub -q s $condorsh
+    bsub -q s ./$condorsh
     #rm ${condorsh} ${condorsub}
     cd -
     #break
