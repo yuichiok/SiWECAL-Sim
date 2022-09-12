@@ -19,7 +19,7 @@ A script to write the geometry description for a given TB year and configuration
 ```
 ### Configurations
 
-Defined in `confs.py`. Per test beam session:
+Defined in `confs.py`. A configuration has per layer tree entries: [Tungsten thickness[mm], Seensitive layer (bool), Silicon thickness [µm]]. Per test beam session:
 
 - 2017-06 (DESY, legacy):
   - CONF0: No Tungsten.
@@ -27,7 +27,6 @@ Defined in `confs.py`. Per test beam session:
 - [2021-11 (DESY)](https://twiki.cern.ch/twiki/bin/view/CALICE/SiWDESY202111):
   - CONF0: No Tungsten.
   - CONF1: 12 * 2.1 mm + 3 * 4.2 mm Tungsten.
-  - ()
 - [2022-03 (DESY)](https://twiki.cern.ch/twiki/bin/viewauth/CALICE/SiWDESY202203):
   - CONF[0,2]: No Tungsten, different slab (Si thickness) arrangement (for different dates: 23/03 and 01/04).
   - CONF[1,3]: Same Tungsten configuration, different slab arrangement.
@@ -36,7 +35,11 @@ Defined in `confs.py`. Per test beam session:
   - CONF1: 7 x 2.8 mm + 8 x 4.2 mm Tungsten.
   - CONF2: 7 x 4.2 mm + 8 x 5.6 mm Tungsten.
   - CONF3: 24 x 4.2 mm Tungsten (ILD baseline 1). All 24 layers with 500 µm Si. 
-  <!-- - CONF4: 26 layers (ILD baseline 2, to be implemented.) -->
+  - CONF4: No Tungsten. Slab arrangement first proposed but not used in actual TB.
+  - CONF5: 8 x 4.2 mm + 7 x 5.6 mm Tungsten, same slab arrangement as CONF4.
+  - CONF6: 8 x 4.2 mm + 7 x 5.6 mm Tungsten. Slab arrangement used in june TB.
+  - CONF7: No Tungsten, same slab arrangement as CONF6.
+  - CONF[8,9]: Analogous to CONF[6,7] but handwritten to have 11mm squared cells for resolution studies.
 
 ### Visualization
 

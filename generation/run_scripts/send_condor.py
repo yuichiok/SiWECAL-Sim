@@ -70,8 +70,8 @@ class Batch:
 
 
     def mkdirs(self):
-        os.mkdirs(self.data_path)
-        os.mkdirs(self.data_path[:-5] + "build")
+        os.makedirs(self.data_path[:-5] + "build", exist_ok=True)
+        os.makedirs(self.data_path, exist_ok=True)
 
     def write_g4macro(self):
         for it, nev in enumerate(self.jobs_events): 
@@ -181,16 +181,6 @@ if __name__ == "__main__":
     with open("condor_config.yml", "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
     
-    # batch = Batch(particle = args.particle,
-    #               energy = args.energy,
-    #               beam_x = args.beam_x,
-    #               beam_y = args.beam_y,
-    #               angle = 0,
-    #               nevents = args.nevents,
-    #               events_per_job = args.events_per_job,
-    #               first_job_index = args.first_job_index,
-    #               tbconf = args.tbconf,
-    #               **config)
     batch = Batch(**vars(args), **config)
     print(batch.steer_path)
     batch.mkdirs()
