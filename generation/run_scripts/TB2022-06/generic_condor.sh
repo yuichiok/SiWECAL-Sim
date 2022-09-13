@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ ! -e steer ]; then
     mkdir steer
 fi
@@ -102,7 +104,9 @@ EOF
     cd ${local}/steer/
 
     # in2p3 server specific
-    sbatch -N1 -t 10 -o slurm_out/slurm-%j.out --partition=hpc ./$condorsh
+    chmod +x $condorsh
+    # srun -lN1 -t 1-0 --partition=htc ./$condorsh
+    sbatch -N1 -t 1-0 -o ../slurm_out/slurm-%j.out --partition=htc ./$condorsh
     
     cd -
   done
