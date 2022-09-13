@@ -4,8 +4,8 @@ OLD_DIR=$PWD
 CPP_DIR=$(dirname "$0")
 cd $CPP_DIR
 
-unset MARLIN_DLL
-source ./init_ilcsoft.sh
+# unset MARLIN_DLL
+# source ./init_ilcsoft.sh
 
 mkdir -p build
 cd build
