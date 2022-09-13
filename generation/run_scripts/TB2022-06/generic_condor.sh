@@ -15,14 +15,9 @@ particle=$1
 energy=$2
 conf=$3
 
-# geometry_folder="/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/generation/geometry_TB2022"
-# ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-03/"
-# local=$PWD
-# data_path="/data_ilc/flc/jimenez/simulations/TB2022/CONF${conf}/"
-
-geometry_folder="/home/ilc/yokugawa/calice/simulation/generation/geometry/TB2022-06"
-ilcsoft_path="/sw/ilc/ilcsoft/gcc820/v02-01-02/"
+ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02"
 local=$PWD
+geometry_folder="${local}/geometry/"
 data_path="${local}/data/"
 
 #macfile=$4
@@ -96,7 +91,7 @@ EOF
     #echo "Condor sh ${local}/steer/$condorsh"
     
     cat > ${local}/steer/$condorsh <<EOF
-# source ${ilcsoft_path}/init_ilcsoft.sh        
+#!/bin/bash
 cp -r ${local}/steer/runddsim_${label}.* .
 ddsim --enableG4GPS --macroFile ${local}/macros/${macfile} --steeringFile ${local}/steer/$scriptname
 #&> ${local}/log/${label}.log
@@ -105,10 +100,11 @@ ddsim --enableG4GPS --macroFile ${local}/macros/${macfile} --steeringFile ${loca
 EOF
     
     cd ${local}/steer/
-    bsub -q s ./$condorsh
-    #rm ${condorsh} ${condorsub}
+
+    # in2p3 server specific
+    sbatch -N1 -t 10 -o slurm_out/slurm-%j.out --partition=hpc ./$condorsh
+    
     cd -
-    #break
   done
 done
 
