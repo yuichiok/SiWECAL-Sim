@@ -35,7 +35,7 @@ namespace CALICE
     //processor parameters:
     float _MIPvalue; /**<MIP conversion factor in GeV*/
     std::string _rootfilename; /**<rootfile name*/
-    std::string _eConfName; /**<econf name*/
+    std::string _auxFileName; /**<econf name*/
 
   public:
 

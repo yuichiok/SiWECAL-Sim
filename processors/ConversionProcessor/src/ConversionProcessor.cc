@@ -78,11 +78,11 @@ namespace CALICE
                                siThicknessesExample);
 
 
-    string eConfNameExample;
-    registerProcessorParameter("Energy_Conf_Name",
+    string auxFileExample;
+    registerProcessorParameter("ConvAuxFile",
                                "Name to identify auxiliary file",
-                               _eConfName,
-                               eConfNameExample);
+                               _auxFileName,
+                               auxFileExample);
     
     registerProcessorParameter("MIPFitMode",
                                "Fit mode of MIP in cells (1, 2, or 3)",
@@ -191,7 +191,7 @@ namespace CALICE
                                            1600, 1., 5);
     }
     //_rootout = new TFile("test_energies.root", "RECREATE");
-    _rootout = new TFile(_eConfName.c_str(), "RECREATE");
+    _rootout = new TFile(_auxFileName.c_str(), "RECREATE");
     _high_mu_dir = _rootout->mkdir("high_mu");
     
     // int randint;
