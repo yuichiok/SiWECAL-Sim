@@ -1,20 +1,27 @@
 #!/bin/env python3
 
+## Example usage:
+## ./prepare_LCIO2Build.py --template ../../steering/templates/LCIO2Build.xml
+##      --output_filename TB2022-06_CONF6_e-_10GeV_test.xml
+##      --LCIOInputFiles /data_ilc/flc/jimenez/simulations/TB2022-08/CONF6/lcio/ECAL_QGSP_BERT_conf6_e-_10GeV_{0..9}.slcio
+##      --Energy_Conf_Name /data_ilc/flc/jimenez/simulations/TB2022-06/CONF6/build/ECAL_QGSP_BERT_conf6_e-_10GeV_5kevt_build.root
+##      --MaxRecordNumber 5000
+
 import xmltodict
 import sys, os, argparse, pathlib
+
 
 MAX_REC = 5000
 
 parser = argparse.ArgumentParser(description="Write processor steering files from a template")
 parser.add_argument('--template', help="Template to start from")
 parser.add_argument('--output_filename', help="Output xml filename")
-#parser.add_argument('--LCIOInputFiles', help="Input LCIO file")
 parser.add_argument('--LCIOInputFiles', nargs='+', help="Input LCIO file(s)")
 parser.add_argument('--MaxRecordNumber', type=int, default=MAX_REC, help="N events (default 5k)")
 #TODO should be a list
 parser.add_argument('--Input_Collections', default="SiEcalCollection", help="Input collection to use (default: SiEcalCollection)")
 #TODO Legacy naming, should be updated in processor(s)
-parser.add_argument('--Energy_Conf_Name', help="Output root file")
+parser.add_argument('--Energy_Conf_Name', help="Output root file (legacy name)")
 parser.add_argument('--tuples', help="String of tuples, in the format \"((key_path_1, val1), (key_path_2, val2), ...)\" to overwrite keys in the steering (not implemented yet)")
 
 def transformer(args, f):
@@ -41,9 +48,7 @@ def transformer(args, f):
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    #file_list = get_file_list(args)
     filename = args.template
-    #print("List of files {}".format(f'\n'.join(args.LCIOInputFiles)))
     
     # Roundtrip xml - json - xml
     with open(filename) as f1:
@@ -52,4 +57,5 @@ if __name__ == "__main__":
     with open(new_filename, "w") as f2:
         f2.write(new_xml)
     print("New xml file written in ", new_filename)
+    print("Run with:\nMarlin", new_filename)
 

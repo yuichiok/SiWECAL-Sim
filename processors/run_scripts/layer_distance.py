@@ -3,6 +3,11 @@
 import numpy as np, sys
 from confs import W_Confs
 
+## Script for producing the FixedPosZ steering vector of LCIO2Build processor
+## given a z-offset of the first layer and a config name
+## Usage:
+## ./layer_distance.py [conf name from confs.py] [z-offset of first layer]
+
 tbconf = sys.argv[1]
 offset = float(sys.argv[2])
 

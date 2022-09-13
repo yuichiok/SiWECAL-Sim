@@ -176,6 +176,8 @@ namespace CALICE
     _treeout->Branch("hit_x", &hit_x);
     _treeout->Branch("hit_y", &hit_y);
     _treeout->Branch("hit_z", &hit_z);
+    _treeout->Branch("hit_positron", &hit_positron);
+    _treeout->Branch("hit_nMC", &hit_nMC);
     // _treeout->Branch("cellID0", &_cellID0);
     // _treeout->Branch("cellID1", &_cellID1);
 
@@ -226,10 +228,16 @@ namespace CALICE
               end = line.find(space_delimiter, start);
           }
           words.push_back(line.substr(start));
-          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][0] = stof(words[4]);
-          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][1] = stof(words[5]);
+          // There's a sign flip in coordinates in mapping (hence the -1*)
+          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][0] = -1 * stof(words[4]);
+          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][1] = -1 * stof(words[5]);
+          // if (64 * stoi(words[0]) + stoi(words[3]) == 0) {
+          //   cout << "CHipchan 0 " << "x y = " << words[4] << words[5];
+          // }
           words.clear();
         }
+
+        // cout << "chipchan 0, 0 = " << _maps[0][0][0] << ", " << _maps[0][0][1] << endl;
         map_file.close();
       }
     }
@@ -310,16 +318,7 @@ namespace CALICE
             hit_isMasked.push_back(0);
             hit_isCommissioned.push_back(1);
 
-            // for (i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
-            //   if (_FixedPosZ_float[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
-            //       _FixedPosZ_float[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
-            //     hit_slab.push_back(i_slab);
-            //     break;
-            //   }
-            // }
-            // Second implementation
             i_slab = (int)((aHit->getPosition()[2] - _Z0) / _slabSpacing);
-            // cout << aHit->getPosition()[2] << " " << i_slab << endl;
             
             hit_slab.push_back(i_slab);
 
@@ -349,7 +348,20 @@ namespace CALICE
                 hit_chip.push_back(icell/64);
                 hit_chan.push_back(icell%64);
               }
+              
             }
+            // Trueth info for Jonas
+            bool found_hp = false;
+            for (int j = 0; j < aHit->getNMCContributions(); j++) {
+              if (aHit->getPDGCont(j) == -11) {
+                hit_positron.push_back(1);
+                found_hp = true;
+                break;
+                }
+            }
+            if (!found_hp) hit_positron.push_back(0);
+            hit_nMC.push_back(aHit->getNMCContributions());
+
             // ** Note ** //
             // I didn't find a straightforward way to fill hit_slab,
             // without providing the list of z layer pos (_FixedPosZ) as
@@ -412,6 +424,8 @@ namespace CALICE
   hit_x.clear();
   hit_y.clear();
   hit_z.clear();
+  hit_positron.clear();
+  hit_nMC.clear();
   //-- note: this will not be printed if compiled w/o MARLINDEBUG=1 !
 
   streamlog_out(DEBUG) << "   processing event: " << evt->getEventNumber()
