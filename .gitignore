@@ -5,6 +5,8 @@
 *~
 \#*
 
+# Python cached files
+**/__pycache__
 
 # Compiled Object files
 *.slo
