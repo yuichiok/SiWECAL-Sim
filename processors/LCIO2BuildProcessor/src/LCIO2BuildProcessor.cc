@@ -68,11 +68,11 @@ namespace CALICE
                                calorimInpCollectionsExample);
 
 
-    string eConfNameExample;
-    registerProcessorParameter("Energy_Conf_Name",
+    string outFileNameExample;
+    registerProcessorParameter("OutputBuildFile",
                                "Name to identify output file",
-                               _eConfName,
-                               eConfNameExample);
+                               _outFileName,
+                               outFileNameExample);
     
     vector<string> siThicknessesExample;
     registerProcessorParameter("SiThicknesses",
@@ -140,7 +140,7 @@ namespace CALICE
 
     _nRun = 0 ;
     _nEvt = 0 ;
-    _rootout = new TFile(_eConfName.c_str(), "RECREATE");
+    _rootout = new TFile(_outFileName.c_str(), "RECREATE");
     _treeout = new TTree("ecal", "From SLCIO");
     _treeout->Branch("event", &event);
     _treeout->Branch("spill", &spill);

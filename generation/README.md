@@ -55,6 +55,11 @@ source /cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-03/init_ilcsoft.sh # al
 ```
 Then run the `geoDisplay` as indicated above.
 
+## Launching the simulation
+
+The main script for preparing the simulation scripts (g4 macros, steering parameters, runnign shellscripts) and submitting the job to the condor queue is `send_condor.py`. The input of that script happens via `condor_config.yml` and the flags passed (explained in the help menu, `./send_condor.py --help`). A dry run (preparing without submitting) is possible by using `--run_locally`, then one could manually run the generation interactively or write a custom submit command.
+
+
 ## Comments
 
 A few minor issues that need to be fixed:
