@@ -43,6 +43,7 @@
 *.pickle
 *.npy
 *.root
+**/data
 
 # Sim macros, output and error logs
 *.mac
@@ -65,7 +66,6 @@
 # generation/run_scripts/TB2022-03/macros/*
 generation/run_scripts/TB20*/steer
 generation/run_scripts/TB20*/log
-generation/run_scripts/TB20*/data
 generation/run_scripts/TB20*/geometry
 generation/plotting/*
 generation/benchmark
