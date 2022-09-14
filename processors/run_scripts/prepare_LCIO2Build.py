@@ -4,7 +4,7 @@
 ## ./prepare_LCIO2Build.py --template ../../steering/templates/LCIO2Build.xml
 ##      --output_filename TB2022-06_CONF6_e-_10GeV_test.xml
 ##      --LCIOInputFiles /data_ilc/flc/jimenez/simulations/TB2022-08/CONF6/lcio/ECAL_QGSP_BERT_conf6_e-_10GeV_{0..9}.slcio
-##      --Energy_Conf_Name /data_ilc/flc/jimenez/simulations/TB2022-06/CONF6/build/ECAL_QGSP_BERT_conf6_e-_10GeV_5kevt_build.root
+##      --OutputBuildFile /data_ilc/flc/jimenez/simulations/TB2022-06/CONF6/build/ECAL_QGSP_BERT_conf6_e-_10GeV_5kevt_build.root
 ##      --MaxRecordNumber 5000
 
 import xmltodict
@@ -20,8 +20,7 @@ parser.add_argument('--LCIOInputFiles', nargs='+', help="Input LCIO file(s)")
 parser.add_argument('--MaxRecordNumber', type=int, default=MAX_REC, help="N events (default 5k)")
 #TODO should be a list
 parser.add_argument('--Input_Collections', default="SiEcalCollection", help="Input collection to use (default: SiEcalCollection)")
-#TODO Legacy naming, should be updated in processor(s)
-parser.add_argument('--Energy_Conf_Name', help="Output root file (legacy name)")
+parser.add_argument('--OutputBuildFile', help="Output build root file")
 parser.add_argument('--tuples', help="String of tuples, in the format \"((key_path_1, val1), (key_path_2, val2), ...)\" to overwrite keys in the steering (not implemented yet)")
 
 def transformer(args, f):
@@ -36,7 +35,7 @@ def transformer(args, f):
             f_dict["marlin"]["global"]["parameter"][ipar]["@value"] = str(args.MaxRecordNumber)
 
     for key, val in (("Input_Collections", args.Input_Collections),
-                     ("Energy_Conf_Name", args.Energy_Conf_Name)): 
+                     ("OutputBuildFile", args.OutputBuildFile)): 
         for ipar, param_key in enumerate(f_dict["marlin"]["processor"]["parameter"]):
             if param_key["@name"] == key:
                 f_dict["marlin"]["processor"]["parameter"][ipar]["#text"] = val 

@@ -31,7 +31,7 @@
     <!-- Name of SimCalorimeterHit input collections -->
     <parameter name="Input_Collections" type="string"> SiEcalCollection </parameter>
     <parameter name="SiThicknesses" type="float"> si_thicknesses </parameter>
-    <parameter name="Energy_Conf_Name" type="string"> output_conv.root </parameter>
+    <parameter name="ConvAuxFile" type="string"> output_conv.root </parameter>
     <!-- MIP fit mode: 1 (Gaus), 2 (Landau), 3 (LanGaus) -->
     <parameter name="MIPFitMode" type="int"> fitmode </parameter>
   </processor>
