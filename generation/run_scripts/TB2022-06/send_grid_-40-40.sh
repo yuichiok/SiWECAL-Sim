@@ -1,6 +1,7 @@
 #!/bin/bash
 
-particle="e-"
+# particle="e-"
+particle="mu-"
 conf="6"
 for energy in 10.0 20.0 40.0 60.0 80.0 100.0 150.0 200.0
 do

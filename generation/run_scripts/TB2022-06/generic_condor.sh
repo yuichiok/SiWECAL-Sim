@@ -25,7 +25,7 @@ data_path="${local}/data/"
 #macfile=$4
 macfile=grid_-40-40_${particle}_${energy}GeV.mac
 
-nevt=5000
+nevt=500
 # nevt=10
 
 cat > ${local}/macros/$macfile <<EOF
