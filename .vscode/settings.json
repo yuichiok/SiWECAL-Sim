@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "masker.C": "cpp",
-        "old_masker.C": "cpp"
+        "old_masker.C": "cpp",
+        "mcplots.C": "cpp",
+        "mcmap.C": "cpp",
+        "mipcal.C": "cpp",
+        "resolutions.C": "cpp",
+        "res_mol_plots.C": "cpp",
+        "single_resolution.C": "cpp"
     }
 }

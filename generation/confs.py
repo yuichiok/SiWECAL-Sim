@@ -240,6 +240,38 @@ W_Confs = {
                           [0, True, 320], # Careful, wf1 0.5
                         ],
 
-      "TB2022-06_CONF8" : [], # Copied ECAL_CONF6 and added apecifics for 11mm cells!
-      "TB2022-06_CONF9" : [], # Copied ECAL_CONF7 and added apecifics for 11mm cells!
+    "TB2022-06_CONF8" : [], # Copied ECAL_CONF6 and added apecifics for 11mm cells!
+    "TB2022-06_CONF9" : [], # Copied ECAL_CONF7 and added apecifics for 11mm cells!
+    "TB2022-06_CONF10" : [ [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                           [0, True, 500],
+                        ],
+    "TB2022-06_CONF11" : [ [4.2, True, 500],
+                           [4.2, True, 500],
+                           [4.2, True, 500],
+                           [4.2, True, 500],
+                           [4.2, True, 500],
+                           [4.2, True, 500],
+                           [4.2, True, 500],
+                           [4.2, True, 500],
+                           [5.6, True, 500],
+                           [5.6, True, 500],
+                           [5.6, True, 500],
+                           [5.6, True, 500],
+                           [5.6, True, 500],
+                           [5.6, True, 500],
+                           [5.6, True, 500],
+                        ],
     }

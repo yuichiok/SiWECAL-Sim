@@ -176,10 +176,6 @@ namespace CALICE
     _treeout->Branch("hit_x", &hit_x);
     _treeout->Branch("hit_y", &hit_y);
     _treeout->Branch("hit_z", &hit_z);
-    _treeout->Branch("hit_positron", &hit_positron);
-    _treeout->Branch("hit_nMC", &hit_nMC);
-    // _treeout->Branch("cellID0", &_cellID0);
-    // _treeout->Branch("cellID1", &_cellID1);
 
     for (int ilayer = 0; ilayer < _FixedPosZ.size(); ilayer++)
       _FixedPosZ_float.push_back(stof(_FixedPosZ[ilayer]));
@@ -231,13 +227,9 @@ namespace CALICE
           // There's a sign flip in coordinates in mapping (hence the -1*)
           _maps[imap][64 * stoi(words[0]) + stoi(words[3])][0] = -1 * stof(words[4]);
           _maps[imap][64 * stoi(words[0]) + stoi(words[3])][1] = -1 * stof(words[5]);
-          // if (64 * stoi(words[0]) + stoi(words[3]) == 0) {
-          //   cout << "CHipchan 0 " << "x y = " << words[4] << words[5];
-          // }
           words.clear();
         }
 
-        // cout << "chipchan 0, 0 = " << _maps[0][0][0] << ", " << _maps[0][0][1] << endl;
         map_file.close();
       }
     }
@@ -260,9 +252,6 @@ namespace CALICE
     //Get the list of collections in the event
     const std::vector<std::string> *cnames = evt->getCollectionNames();
     
-    // Here add MC particle truth loop
-    // LCCollection *MCParticleCollection = evt->getCollection("MCParticle");
-    // int noParticles = MCParticleCollection->getNumberOfElements();
     std::vector<float> this_energyCont;
     // int this_nMC;
     for(unsigned int icol = 0; icol < _calorimInpCollections.size(); icol++)
@@ -306,9 +295,14 @@ namespace CALICE
           // Hits loop
           for (int i = 0; i < noHits; i++)
           {
-            SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
-            //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
-            // hitCast(*aHit);
+            // // Following line works, the pushbacks
+            // SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
+            // //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
+            // // hitCast(*aHit);
+
+            // This is in DigiLCIO2Build
+            // CalorimeterHit *aHit = dynamic_cast<CalorimeterHit*>(inputCalorimCollection->getElementAt(i));
+            CalorimeterHit *aHit = dynamic_cast<CalorimeterHit*>(inputCalorimCollection->getElementAt(i));
 
             hit_sca.push_back(-1);
             hit_adc_high.push_back(-1);
@@ -350,17 +344,6 @@ namespace CALICE
               }
               
             }
-            // Trueth info for Jonas
-            bool found_hp = false;
-            for (int j = 0; j < aHit->getNMCContributions(); j++) {
-              if (aHit->getPDGCont(j) == -11) {
-                hit_positron.push_back(1);
-                found_hp = true;
-                break;
-                }
-            }
-            if (!found_hp) hit_positron.push_back(0);
-            hit_nMC.push_back(aHit->getNMCContributions());
 
             // ** Note ** //
             // I didn't find a straightforward way to fill hit_slab,
@@ -424,8 +407,6 @@ namespace CALICE
   hit_x.clear();
   hit_y.clear();
   hit_z.clear();
-  hit_positron.clear();
-  hit_nMC.clear();
   //-- note: this will not be printed if compiled w/o MARLINDEBUG=1 !
 
   streamlog_out(DEBUG) << "   processing event: " << evt->getEventNumber()
