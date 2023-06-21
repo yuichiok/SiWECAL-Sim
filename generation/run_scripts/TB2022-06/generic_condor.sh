@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ ! -e steer ]; then
     mkdir steer
 fi
@@ -15,15 +17,16 @@ particle=$1
 energy=$2
 conf=$3
 
-geometry_folder="/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/generation/geometry_TB2022"
-ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-03/"
+ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02"
 local=$PWD
-data_path="/data_ilc/flc/jimenez/simulations/TB2022/CONF${conf}/"
+geometry_folder="${local}/geometry/"
+data_path="${local}/data/"
 
 #macfile=$4
 macfile=grid_-40-40_${particle}_${energy}GeV.mac
 
 nevt=5000
+# nevt=10
 
 cat > ${local}/macros/$macfile <<EOF
 
@@ -73,8 +76,8 @@ SIM.runType = "run"
 #SIM.numberOfEvents = $nevt
 
 SIM.skipNEvents = 0
-#SIM.outputFile = "${local}/data/ECAL_${label}.slcio"
-SIM.outputFile = "${data_path}/ECAL_${label}.slcio"
+SIM.outputFile = "${local}/data/ECAL_${label}.slcio"
+# SIM.outputFile = "${data_path}/ECAL_${label}.slcio"
 
 SIM.compactFile = "${geometry_folder}/ECAL_CONF${conf}.xml"
 SIM.dumpSteeringFile = "${local}/steer/dumpSteering.xml"
@@ -90,7 +93,7 @@ EOF
     #echo "Condor sh ${local}/steer/$condorsh"
     
     cat > ${local}/steer/$condorsh <<EOF
-source ${ilcsoft_path}/init_ilcsoft.sh        
+#!/bin/bash
 cp -r ${local}/steer/runddsim_${label}.* .
 ddsim --enableG4GPS --macroFile ${local}/macros/${macfile} --steeringFile ${local}/steer/$scriptname
 #&> ${local}/log/${label}.log
@@ -99,10 +102,13 @@ ddsim --enableG4GPS --macroFile ${local}/macros/${macfile} --steeringFile ${loca
 EOF
     
     cd ${local}/steer/
-    /opt/exp_soft/cms/t3/t3submit -short $condorsh
-    #rm ${condorsh} ${condorsub}
+
+    # in2p3 server specific
+    chmod +x $condorsh
+    # srun -lN1 -t 1-0 --partition=htc ./$condorsh
+    sbatch -N1 -t 1-0 -o ../slurm_out/slurm-%j.out --partition=htc ./$condorsh
+    
     cd -
-    #break
   done
 done
 

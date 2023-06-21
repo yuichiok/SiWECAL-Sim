@@ -286,7 +286,7 @@ namespace CALICE
             // unsigned int hit_layer_index = std::distance(_FixedPosZ_float, itr);
             int hit_layer_index = std::distance(_FixedPosZ_float.begin(), std::find(_FixedPosZ_float.begin(), _FixedPosZ_float.end(), aSimCalorimHit->getPosition()[2]));
             float this_MIPvalue = _MIP2GeVFactors_float[hit_layer_index]; 
-
+            
             for(int j = 0; j < noSubHits; j++){//fill hit time and deposited energy per sub-hit
 
               // const float *_hitStep = aSimCalorimHit->getStepPosition(j);
@@ -302,11 +302,14 @@ namespace CALICE
                 (double)aSimCalorimHit->getTimeCont(j),
                 (double)aSimCalorimHit->getEnergyCont(j)/this_MIPvalue
               };
+              // cout << "\tsubhit " << j << ", energy/mip = " << (double)aSimCalorimHit->getEnergyCont(j) << "/" << this_MIPvalue << endl;
               subhitsTime[j] = (float)aSimCalorimHit->getTimeCont(j);
               subhitsEnergy[j] = _edepstep;
 
             }//end loop on subhits
 
+            // Test ievent
+            // if (_nEvt % 10 == 0) cout << "Passed loop subhit for evt " << _nEvt << endl;
             if ((_nEvt == 0) && (i == 0)) _plotHit  = true;
             else _plotHit = false;
 
@@ -318,7 +321,6 @@ namespace CALICE
               continue;
             }
             // Plot shaper
-
             CalorimeterHitImpl * aCalorimHit =  new CalorimeterHitImpl();
 
             const float *hitpos = aSimCalorimHit->getPosition();
@@ -357,6 +359,7 @@ namespace CALICE
             
             _treeout->Fill();
             
+
 
             // float energy(0.);//energy sum
             // int ThrIndex(0);//index of the first hit in the sliding window
@@ -448,9 +451,9 @@ namespace CALICE
     _rootout->Write("", TObject::kOverwrite);
     _rootout->Close();
 
-    cout << "Number of hits left out: " << to_string(_nLeft) << "\n";
-    cout << "Number of total hits: " << to_string(_nTot) << "\n";
-    cout << "Ratio: " << to_string((_nTot - _nLeft) / _nTot) << "\n";
+    // cout << "Number of hits left out: " << to_string(_nLeft) << "\n";
+    // cout << "Number of total hits: " << to_string(_nTot) << "\n";
+    // cout << "Ratio: " << to_string((_nTot - _nLeft) / _nTot) << "\n";
 
     std::cout << "ShapingProcessor::end()  " << name()
     << " processed " << _nEvt << " events in " << _nRun << " runs "
