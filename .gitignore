@@ -82,6 +82,10 @@ processors/lib/*
 processors/steering/*
 !processors/steering/templates/
 
+masking/*.sh
+masking/*GeV*.txt
+
+.vscode
+
 */build/*
 */CMakeFiles/*
-**/__pycache__
