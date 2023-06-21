@@ -105,7 +105,8 @@ class Batch:
              ijob)  
              # Should be only one label...
             label2 = "ECAL_{}_conf{}_{}_{}GeV_{}".format(self.physics_list,
-                                                         self.conf[-1], ## Sould be debugged!!!
+                                                         #self.conf[-1], ## Sould be debugged!!!
+                                                         self.conf.split("CONF")[-1], ## testing!!!
                                                          self.particle,
                                                          self.energy,
                                                          ijob)
