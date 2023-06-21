@@ -26,7 +26,7 @@ Under `run_scripts` there are per-processor `prepare_[processor].py` (python3) s
 Suppose we have lcio files for simulated mu- (MIP, for conversion) and e- for TB2022-06. Then, prepare the conversion xml file (py3 env):
 
 ```bash
-./run_scripts/prepare_Conversion.py --template steering/templates/Conversion.xml --output_filename steering/Conversion/TB2022-06_CONF6_mu-_conv_test.xml --LCIOInputFiles [mu-_LCIO_FILES] --Energy_Conf_Name [OUTPUT_CONV_ROOT_FILENAME] --MaxRecordNumber 5000 --tb_conf TB2022-06_CONF6 --MIPFitMode 1
+./run_scripts/prepare_Conversion.py --template steering/templates/Conversion.xml --output_filename steering/Conversion/TB2022-06_CONF6_mu-_conv_test.xml --LCIOInputFiles [mu-_LCIO_FILES] --ConvAuxFile [OUTPUT_CONV_ROOT_FILENAME] --MaxRecordNumber 5000 --tb_conf TB2022-06_CONF6 --MIPFitMode 1
 ```
 
 Run the processor with (ilcsoft env):
@@ -45,9 +45,9 @@ For deriving a ROOT file out of the SLCIO (with the conversion), prepare the ste
 
 ```bash
  ./run_scripts/prepare_LCIO2Build.py --template steering/templates/LCIO2Build.xml
-      --output_filename steering/Conversion/TB2022-06_CONF6_e-_10GeV_test.xml
+      --output_filename steering/LCIO2Build/TB2022-06_CONF6_e-_10GeV_test.xml
       --LCIOInputFiles [e-_LCIO_FILES]
-      --Energy_Conf_Name [OUTPUT_DERIVED_ROOT_FILENAME]
+      --OutputBuildFile [OUTPUT_DERIVED_ROOT_FILENAME]
       --MaxRecordNumber 5000
 ```
 
