@@ -1,3 +1,6 @@
+#include <iostream>
+#include <vector>
+
 void masker (string mask_filename="raw_siwecal_90134_masked_channels.txt", string in_filename="/data_ilc/flc/jimenez/simulations/TB2022-06/CONF6/build/ECAL_QGSP_BERT_conf6_e-_10GeV_5kevt_build.root") {
     
     // Read the mask
@@ -32,7 +35,16 @@ void masker (string mask_filename="raw_siwecal_90134_masked_channels.txt", strin
     // oldtree->SetBranchStatus("*", 1);
     // oldtree->SetBranchStatus("hit_isMasked", 0);
     oldtree->SetBranchStatus("*", 0);
-    auto branchnames = {"event", "spill", "cycle", "bcid", "bcid_first_sca_full", "bcid_merge_end", "id_run", "id_dat", "nhit_slab", "nhit_chip", "nhit_chan", "nhit_len", "sum_energy", "sum_energy_lg", "hit_slab", "hit_chip", "hit_chan", "hit_sca", "hit_adc_high", "hit_adc_low", "hit_n_scas_filled", "hit_isHit", "hit_isCommissioned", "hit_energy", "hit_energy_w", "hit_energy_lg", "hit_x", "hit_y", "hit_z"};
+    auto branchnames = {"event", "spill", "cycle",
+                        "bcid", "bcid_first_sca_full", "bcid_merge_end",
+                        "id_run", "id_dat",
+                        "nhit_slab", "nhit_chip", "nhit_chan", "nhit_len",
+                        "sum_energy", "sum_energy_lg",
+                        "hit_slab", "hit_chip", "hit_chan", "hit_sca",
+                        "hit_adc_high", "hit_adc_low", "hit_n_scas_filled",
+                        "hit_isHit", "hit_isCommissioned", "hit_energy",
+                        "hit_energy_w", "hit_energy_lg",
+                        "hit_x", "hit_y", "hit_z"};
     for (auto activeBranchName : branchnames) {
         // if (activeBranchName == "hit_isMasked") continue;
         oldtree->SetBranchStatus(activeBranchName, 1);
@@ -46,9 +58,9 @@ void masker (string mask_filename="raw_siwecal_90134_masked_channels.txt", strin
     auto newtree = oldtree->CloneTree(nentries);
 
     // Cycle in old ttree, check and mask
-    vector<float> *hit_chip = 0;
-    vector<float> *hit_chan = 0;
-    vector<float> *hit_slab = 0;
+    vector<int> *hit_chip = 0;
+    vector<int> *hit_chan = 0;
+    vector<int> *hit_slab = 0;
     vector<int> *hit_isMasked;
     
     TBranch *bhit_chip = 0;
