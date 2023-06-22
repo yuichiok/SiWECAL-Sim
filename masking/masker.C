@@ -40,7 +40,7 @@ void masker (string mask_filename="raw_siwecal_90134_masked_channels.txt", strin
                         "id_run", "id_dat",
                         "nhit_slab", "nhit_chip", "nhit_chan", "nhit_len",
                         "sum_energy", "sum_energy_lg",
-                        "hit_slab", "hit_chip", "hit_chan", "hit_sca",
+                        "hit_sca",
                         "hit_adc_high", "hit_adc_low", "hit_n_scas_filled",
                         "hit_isHit", "hit_isCommissioned", "hit_energy",
                         "hit_energy_w", "hit_energy_lg",
@@ -67,18 +67,25 @@ void masker (string mask_filename="raw_siwecal_90134_masked_channels.txt", strin
     TBranch *bhit_chan = 0;
     TBranch *bhit_slab = 0;
     TBranch *bhit_isMasked = 0;
-    oldtree->SetBranchAddress("hit_chip", &hit_chip, &bhit_chip);
-    oldtree->SetBranchAddress("hit_chan", &hit_chan, &bhit_chan);
-    oldtree->SetBranchAddress("hit_slab", &hit_slab, &bhit_slab);
+    newtree->Branch("hit_chip",     &hit_chip);
+    newtree->Branch("hit_chan",     &hit_chan);
+    newtree->Branch("hit_slab",     &hit_slab);
     newtree->Branch("hit_isMasked", &hit_isMasked);
+
+    newtree->SetBranchAddress("hit_chip", &hit_chip, &bhit_chip);
+    newtree->SetBranchAddress("hit_chan", &hit_chan, &bhit_chan);
+    newtree->SetBranchAddress("hit_slab", &hit_slab, &bhit_slab);
     newtree->SetBranchAddress("hit_isMasked", &hit_isMasked, &bhit_isMasked);
-    
+
+
+
+
     for (int i_event = 0; i_event < nentries; i_event++) {
         oldtree->GetEntry(i_event);
-        for (int j = 0; j < hit_chip->size(); j++) {
-            hit_isMasked->push_back(mask[hit_slab->at(j)][hit_chip->at(j)][hit_chan->at(j)]);
-        }
-        bhit_isMasked->Fill();
+        // for (int j = 0; j < hit_chip->size(); j++) {
+        //     hit_isMasked->push_back(mask[hit_slab->at(j)][hit_chip->at(j)][hit_chan->at(j)]);
+        // }
+        // bhit_isMasked->Fill();
         hit_isMasked->clear();
         hit_chip->clear();
         hit_chan->clear();
