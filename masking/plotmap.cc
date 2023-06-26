@@ -55,7 +55,7 @@ void plotmap (string mask_filename="raw_siwecal_90134_masked_channels.txt") {
   // Plot the map
   TH2F* mapxy =new TH2F("mapxy","map-xy; x; y",32,-90,90,32,-90,90);
   TH2F* mapxy_chip =new TH2F("mapxy_chip","map-xy; x; y",32,-90,90,32,-90,90);
-  int fev10_layer = 0;
+  int fev10_layer = 4;
   for( int i_chip=0; i_chip < N_CHIP; i_chip++) {
     for( int i_chan=0; i_chan < N_CHAN; i_chan++) {
       if (mask[fev10_layer][i_chip][i_chan] == 1) {
