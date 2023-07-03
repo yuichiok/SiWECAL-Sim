@@ -37,10 +37,10 @@
   <define>
     <constant name="env_safety" value="0.001*mm"/>
     
-    <constant name="Ecal_NcellsX" value="32" />
-    <constant name="Ecal_NcellsY" value="32" />
-    <constant name="Ecal_CellSizeX" value="5.5*mm" />
-    <constant name="Ecal_CellSizeY" value="5.5*mm" />
+    <constant name="Ecal_NcellsX" value="16" />
+    <constant name="Ecal_NcellsY" value="16" />
+    <constant name="Ecal_CellSizeX" value="11*mm" />
+    <constant name="Ecal_CellSizeY" value="11*mm" />
 
     <constant name="Ecal_dim_x" value="Ecal_NcellsX*Ecal_CellSizeX"/>
     <constant name="Ecal_dim_y" value="Ecal_NcellsY*Ecal_CellSizeY"/>

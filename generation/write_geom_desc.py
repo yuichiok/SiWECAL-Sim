@@ -109,15 +109,17 @@ def write_geom_xml(layerconfig, conf):
         nAbs=layer[0]
         slab=layer[1]
         Si_z=layer[2]
-        if nAbs<0 or nAbs>8:
-            print('crazy number of W plates!', nAbs)
+        if nAbs<0 or nAbs>5.6:
+            print('crazy W thickness!', nAbs)
             exit
-        nAir=8-nAbs
+        nAir=5.6-nAbs
         print('<layer repeat="1" vis="EcalVis">')
         if nAir>0:
-            print('<slice material = "Air" thickness = "'+str(nAir)+'*Ecal_WThickness"  vis="AirVis" />')
+            #print('<slice material = "Air" thickness = "'+str(nAir)+'*Ecal_WThickness"  vis="AirVis" />')
+            print('<slice material = "Air" thickness = "{:.2f}*Ecal_WThickness"  vis="AirVis" />'.format(nAir))
         if nAbs>0:
-            print('<slice material = "TungstenDens1910" thickness = "'+str(nAbs)+'*Ecal_WThickness"  vis="TungstenVis" />')
+            #print('<slice material = "TungstenDens1910" thickness = "'+str(nAbs)+'*Ecal_WThickness"  vis="TungstenVis" />')
+            print('<slice material = "TungstenDens1910" thickness = "{:.2f}*Ecal_WThickness"  vis="TungstenVis" />'.format(nAbs))
         
         if slab:
             print('<slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>')

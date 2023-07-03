@@ -17,7 +17,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <includes>
 <gdmlFile  ref="${DD4hepINSTALL}/DDDetectors/compact/elements.xml"/>
 <gdmlFile  ref="${DD4hepINSTALL}/DDDetectors/compact/materials.xml"/>
-<gdmlFile  ref="./extra_materials.xml"/>
+<gdmlFile  ref="../extra_materials.xml"/>
 </includes>
 <plugins>
 <plugin name="InstallSurfaceManager"/>
@@ -46,10 +46,10 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <vis name="InVis"     alpha="1.0"  r="0.0" g="1.0"  b="0.0" showDaughters="true"  visible="false"/>
 </display>
 <define>
-<include ref="ECAL_commondefs.xml"/>
+<include ref="../ECAL_commondefs.xml"/>
 </define>
 <display>
-<include ref="ECAL_commondisp.xml"/>
+<include ref="../ECAL_commondisp.xml"/>
 </display>
 <readouts>
 <readout name="SiEcalCollection">
@@ -67,10 +67,10 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <rotation x="0" y="0" z="0"/>
 <position x="0" y="0" z="Ecal_dim_z/2.0"/>
 </envelope>
-<slice material = "PolyethyleneProto"    thickness = "Ecal_PlasticThickness"   vis="PlasticVis"/>
+<slice material = "Al"      thickness = "Ecal_AlThickness"   vis="AlVis"/>
 <slice material = "Air"         thickness = "59.7*mm"   vis="Invisible"/>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -82,7 +82,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap320"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -94,7 +94,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap320"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -106,7 +106,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap650"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -118,7 +118,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap650"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -130,7 +130,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap320"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -142,7 +142,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -154,7 +154,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -166,7 +166,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -178,7 +178,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -190,7 +190,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -202,7 +202,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap500"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -214,7 +214,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap320"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -226,7 +226,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap320"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>
@@ -238,7 +238,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
 <slice material = "Air"         thickness = "Ecal_w_slab_gap320"        vis="AirVis"/>
 </layer>
 <layer repeat="1" vis="EcalVis">
-<slice material = "Air" thickness = "6*Ecal_WThickness"  vis="AirVis" />
+<slice material = "Air" thickness = "5.60*Ecal_WThickness"  vis="AirVis" />
 <slice material = "CarbonFiber" thickness = "Ecal_CFThickness"        vis="CFVis"/>
 <slice material = "Cu"          thickness = "Ecal_KaptonThickness"    vis="CuVis" />
 <slice material = "Air"         thickness = "Ecal_GlueThickness_kap"  vis="AirVis"/>

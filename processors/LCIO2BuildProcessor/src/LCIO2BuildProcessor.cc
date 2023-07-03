@@ -68,11 +68,11 @@ namespace CALICE
                                calorimInpCollectionsExample);
 
 
-    string eConfNameExample;
-    registerProcessorParameter("Energy_Conf_Name",
+    string outFileNameExample;
+    registerProcessorParameter("OutputBuildFile",
                                "Name to identify output file",
-                               _eConfName,
-                               eConfNameExample);
+                               _outFileName,
+                               outFileNameExample);
     
     vector<string> siThicknessesExample;
     registerProcessorParameter("SiThicknesses",
@@ -140,7 +140,7 @@ namespace CALICE
 
     _nRun = 0 ;
     _nEvt = 0 ;
-    _rootout = new TFile(_eConfName.c_str(), "RECREATE");
+    _rootout = new TFile(_outFileName.c_str(), "RECREATE");
     _treeout = new TTree("ecal", "From SLCIO");
     _treeout->Branch("event", &event);
     _treeout->Branch("spill", &spill);
@@ -176,8 +176,6 @@ namespace CALICE
     _treeout->Branch("hit_x", &hit_x);
     _treeout->Branch("hit_y", &hit_y);
     _treeout->Branch("hit_z", &hit_z);
-    // _treeout->Branch("cellID0", &_cellID0);
-    // _treeout->Branch("cellID1", &_cellID1);
 
     for (int ilayer = 0; ilayer < _FixedPosZ.size(); ilayer++)
       _FixedPosZ_float.push_back(stof(_FixedPosZ[ilayer]));
@@ -226,10 +224,12 @@ namespace CALICE
               end = line.find(space_delimiter, start);
           }
           words.push_back(line.substr(start));
-          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][0] = stof(words[4]);
-          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][1] = stof(words[5]);
+          // There's a sign flip in coordinates in mapping (hence the -1*)
+          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][0] = -1 * stof(words[4]);
+          _maps[imap][64 * stoi(words[0]) + stoi(words[3])][1] = -1 * stof(words[5]);
           words.clear();
         }
+
         map_file.close();
       }
     }
@@ -252,9 +252,6 @@ namespace CALICE
     //Get the list of collections in the event
     const std::vector<std::string> *cnames = evt->getCollectionNames();
     
-    // Here add MC particle truth loop
-    // LCCollection *MCParticleCollection = evt->getCollection("MCParticle");
-    // int noParticles = MCParticleCollection->getNumberOfElements();
     std::vector<float> this_energyCont;
     // int this_nMC;
     for(unsigned int icol = 0; icol < _calorimInpCollections.size(); icol++)
@@ -298,9 +295,14 @@ namespace CALICE
           // Hits loop
           for (int i = 0; i < noHits; i++)
           {
-            SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
-            //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
-            // hitCast(*aHit);
+            // // Following line works, the pushbacks
+            // SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
+            // //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
+            // // hitCast(*aHit);
+
+            // This is in DigiLCIO2Build
+            // CalorimeterHit *aHit = dynamic_cast<CalorimeterHit*>(inputCalorimCollection->getElementAt(i));
+            CalorimeterHit *aHit = dynamic_cast<CalorimeterHit*>(inputCalorimCollection->getElementAt(i));
 
             hit_sca.push_back(-1);
             hit_adc_high.push_back(-1);
@@ -310,16 +312,7 @@ namespace CALICE
             hit_isMasked.push_back(0);
             hit_isCommissioned.push_back(1);
 
-            // for (i_slab = 0; i_slab < _FixedPosZ.size(); i_slab++){
-            //   if (_FixedPosZ_float[i_slab] > (aHit->getPosition()[2] - _deltaZ) &&
-            //       _FixedPosZ_float[i_slab] < (aHit->getPosition()[2] + _deltaZ) ) {
-            //     hit_slab.push_back(i_slab);
-            //     break;
-            //   }
-            // }
-            // Second implementation
             i_slab = (int)((aHit->getPosition()[2] - _Z0) / _slabSpacing);
-            // cout << aHit->getPosition()[2] << " " << i_slab << endl;
             
             hit_slab.push_back(i_slab);
 
@@ -349,7 +342,9 @@ namespace CALICE
                 hit_chip.push_back(icell/64);
                 hit_chan.push_back(icell%64);
               }
+              
             }
+
             // ** Note ** //
             // I didn't find a straightforward way to fill hit_slab,
             // without providing the list of z layer pos (_FixedPosZ) as
