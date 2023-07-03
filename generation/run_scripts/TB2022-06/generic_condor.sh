@@ -23,7 +23,7 @@ geometry_folder="${local}/geometry/"
 data_path="${local}/data/"
 
 #macfile=$4
-macfile=grid_-40-40_${particle}_${energy}GeV.mac
+macfile=grid_-53.43-41.73_${particle}_${energy}GeV.mac
 
 nevt=5000
 # nevt=10
@@ -35,9 +35,9 @@ cat > ${local}/macros/$macfile <<EOF
 /gps/direction 0 0 1
 /gps/pos/type Beam
 /gps/pos/shape Circle
-/gps/pos/centre -40 -40 0 mm
-/gps/pos/sigma_x 7 mm
-/gps/pos/sigma_y 7 mm
+/gps/pos/centre -53.43 -41.73 0 mm
+/gps/pos/sigma_x 23.5 mm
+/gps/pos/sigma_y 29.7 mm
 /gps/ang/rot1 0 0 1
 /gps/ang/rot2 0 1 0
 
@@ -106,7 +106,8 @@ EOF
     # in2p3 server specific
     chmod +x $condorsh
     # srun -lN1 -t 1-0 --partition=htc ./$condorsh
-    sbatch -N1 -t 1-0 -o ../slurm_out/slurm-%j.out --partition=htc ./$condorsh
+    # sbatch -N1 -t 1-0 -o ../slurm_out/slurm-%j.out --partition=htc ./$condorsh
+    bsub ./$condorsh
     
     cd -
   done
