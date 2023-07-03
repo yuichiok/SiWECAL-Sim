@@ -26,7 +26,7 @@ void plotmap (string filename="Run_Settings/Run_Settings_90320_e-_10.0GeV.txt") 
   for( int i_chip=0; i_chip < N_CHIP; i_chip++) {
     for( int i_chan=0; i_chan < N_CHAN; i_chan++) {
 
-      if( detector.slab[0][0].asu[0].skiroc[i_chip].mask[i_chan] ){
+      if( detector.slab[0][fev10_layer].asu[0].skiroc[i_chip].mask[i_chan] ){
         mapxy->Fill(fev10_xy["X"].at(i_chip).at(i_chan),fev10_xy["Y"].at(i_chip).at(i_chan),i_chan);
       }
       mapxy_chip->Fill(fev10_xy["X"].at(i_chip).at(i_chan),fev10_xy["Y"].at(i_chip).at(i_chan),i_chip+1);
