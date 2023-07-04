@@ -11,6 +11,8 @@ parser.add_argument('--particle', default="e-", help="Particle name, default \"e
 parser.add_argument('--energy', default="3.0", type=str, help="Beam particle energy in GeV (default 3.0).")
 parser.add_argument('--beam_x', default="0", type=str, help="Beam x position (deafult 0)")
 parser.add_argument('--beam_y', default="0", type=str, help="Beam y position (deafult 0)")
+parser.add_argument('--beam_sigma_x', default="7", type=str, help="Beam sigma x (deafult 7)")
+parser.add_argument('--beam_sigma_y', default="7", type=str, help="Beam sigma y (deafult 7)")
 parser.add_argument('--angle', default=0, help="Incidence angle of beam (testing this feature).")
 parser.add_argument('--nevents', default=100, type=int, help="Number of events (default 100).")
 parser.add_argument('--events_per_job', default=1000, type=int, help="Max number of events per batch job (default 1000).")
@@ -25,6 +27,8 @@ class Batch:
                  energy,
                  beam_x,
                  beam_y,
+                 beam_sigma_x,
+                 beam_sigma_y,
                  angle,
                  nevents,
                  events_per_job,
@@ -41,6 +45,8 @@ class Batch:
         self.energy = energy
         self.beam_x = beam_x
         self.beam_y = beam_y
+        self.beam_sigma_x = beam_sigma_x
+        self.beam_sigma_y = beam_sigma_y
         self.angle = angle
         self.nevents = nevents 
         self.events_per_job = events_per_job 
@@ -84,8 +90,8 @@ class Batch:
                 f.write("/gps/pos/type Beam\n")
                 f.write("/gps/pos/shape Circle\n")
                 f.write("/gps/pos/centre {} {} 0 mm\n".format(self.beam_x, self.beam_y))
-                f.write("/gps/pos/sigma_x 7 mm\n")
-                f.write("/gps/pos/sigma_y 7 mm\n")
+                f.write("/gps/pos/sigma_x {} mm\n".format(self.beam_sigma_x))
+                f.write("/gps/pos/sigma_y {} mm\n".format(self.beam_sigma_y))
                 # Angle should be added here
                 f.write("/gps/ang/rot1 0 0 1\n")
                 f.write("/gps/ang/rot2 0 1 0\n")
@@ -148,6 +154,7 @@ class Batch:
             condorsh = self.steer_path + "/runddsim_" + label + ".sh"
             macroname = self.g4macroname[:-4] + "_" + str(ijob) + ".mac"
             with open(condorsh, 'w') as f:
+                f.write("#!/bin/sh\n")
                 f.write("source {}/init_ilcsoft.sh\n".format(self.ilcsoft_path)) 
                 print(os.getcwd())
                 f.write("cp -r {}/runddsim_{}.{{py,sh}} .\n".format(self.steer_path, label))
