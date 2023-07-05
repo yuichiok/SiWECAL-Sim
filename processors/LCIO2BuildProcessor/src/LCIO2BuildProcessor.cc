@@ -104,13 +104,15 @@ namespace CALICE
                                _ConversionGeV2MIP,
                                ConversionGeV2MIPExample);
     
-    vector<string> MapFilenamesExample = {"/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/processors/LCIO2BuildProcessor/mapping/fev10_chip_channel_x_y_mapping.txt", "/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/processors/LCIO2BuildProcessor/mapping/fev11_cob_rotate_chip_channel_x_y_mapping.txt"};
+    // vector<string> MapFilenamesExample = {"/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/processors/LCIO2BuildProcessor/mapping/fev10_chip_channel_x_y_mapping.txt", "/home/llr/ilc/jimenez/Projects/Simulations/SiWECAL-Sim/processors/LCIO2BuildProcessor/mapping/fev11_cob_rotate_chip_channel_x_y_mapping.txt"};
+    vector<string> MapFilenamesExample = {"/pbs/home/y/yokugawa/workspace/calice/SiWECAL/simulation/processors/LCIO2BuildProcessor/mapping/fev10_chip_channel_x_y_mapping.txt", "/pbs/home/y/yokugawa/workspace/calice/SiWECAL/simulation/processors/LCIO2BuildProcessor/mapping/fev11_cob_rotate_chip_channel_x_y_mapping.txt"};
     registerProcessorParameter("MappingFiles",
                                "Files mapping hit position with cell chan and chip",
                                _MapFilenames,
                                MapFilenamesExample);
     
-    vector<int> SlabMapIndicesExample = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1};
+    // vector<int> SlabMapIndicesExample = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1};
+    vector<int> SlabMapIndicesExample = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0};
     registerProcessorParameter("SlabMapIndices",
                                "vector indices of maps (from MappingFiles parameters) to be used per slab",
                                _SlabMapIndices,
@@ -296,13 +298,12 @@ namespace CALICE
           for (int i = 0; i < noHits; i++)
           {
             // // Following line works, the pushbacks
-            // SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
+            SimCalorimeterHit *aHit = dynamic_cast<SimCalorimeterHit*>(inputCalorimCollection->getElementAt(i));
             // //auto *aHit = hitCast(inputCalorimCollection->getElementAt(i));
             // // hitCast(*aHit);
 
             // This is in DigiLCIO2Build
             // CalorimeterHit *aHit = dynamic_cast<CalorimeterHit*>(inputCalorimCollection->getElementAt(i));
-            CalorimeterHit *aHit = dynamic_cast<CalorimeterHit*>(inputCalorimCollection->getElementAt(i));
 
             hit_sca.push_back(-1);
             hit_adc_high.push_back(-1);
