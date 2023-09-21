@@ -72,4 +72,6 @@ void masker (string filename="Run_Settings/Run_Settings_90320_e-_10.0GeV.txt", s
   delete oldfile;
   delete newfile;
 
+  exit(0);
+
 }
